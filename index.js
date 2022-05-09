@@ -25,6 +25,11 @@ const store = createStore(
   //   : applyMiddleware(thunk),
 );
 
+const initializeAxiosData = (url)=>{
+  console.log("call and set default url");
+ axios.defaults.baseURL = url;
+}
+
 const persistor = persistStore(store, {}, () => {
   const {user} = store.getState().auth;
   if (user?.token) {
@@ -35,4 +40,4 @@ const persistor = persistStore(store, {}, () => {
   }
 });
 
-export {store, persistor};
+export {store, persistor, initializeAxiosData};
