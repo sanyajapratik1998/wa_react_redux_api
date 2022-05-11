@@ -1,71 +1,77 @@
-import axios from 'axios';
-import CommonActions from '../reduxsauce/commonRedux';
-import NotificationActions from '../reduxsauce/notificationRedux';
+import axios from "axios";
+import CommonActions from "../reduxsauce/commonRedux";
+import NotificationActions from "../reduxsauce/notificationRedux";
 
 const limitPage = 10;
 
-export const getNotificationList = data => async (dispatch, getState) => {
-  const {config} = getState();
+export const getNotificationList = (data) => async (dispatch, getState) => {
+  const { config } = getState();
   dispatch(CommonActions.setLoading(true));
   await axios
-    .get('/notification/list/'+config?.businessId)
-    .then(response => {
+    .get("/notification/list/" + config?.businessId)
+    .then((response) => {
       dispatch(NotificationActions.setNotification(response.data));
       dispatch(CommonActions.setLoading(false));
     })
-    .catch(error => {
+    .catch((error) => {
       dispatch(CommonActions.setLoading(false));
       dispatch(
         CommonActions.setAlert({
           visible: true,
           content: error?.response?.message,
-        }),
+        })
       );
-      console.log('error >> ', error?.response?.message);
+      console.log("error >> ", error?.response?.message);
     });
 };
 
-export const addNotificationInList = data => async (dispatch, getState) => {
+export const addNotificationInList = (data) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   await axios
-    .post('/notification/create', data)
-    .then(response => {
+    .post("/notification/create", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
       dispatch(NotificationActions.addNotificationInList(response.data));
       dispatch(CommonActions.setLoading(false));
     })
-    .catch(error => {
+    .catch((error) => {
       dispatch(CommonActions.setLoading(false));
       dispatch(
         CommonActions.setAlert({
           visible: true,
           content: error?.response?.message,
-        }),
+        })
       );
-      console.log('error >> ', error?.response);
+      console.log("error >> ", error?.response);
     });
 };
-export const updateNotificationInList = (data, id) => async (
-  dispatch,
-  getState,
-) => {
-  dispatch(CommonActions.setLoading(true));
-  await axios
-    .put('/notification/update/' + id, data)
-    .then(response => {
-      dispatch(NotificationActions.updateNotificationInList(response.data));
-      dispatch(CommonActions.setLoading(false));
-    })
-    .catch(error => {
-      dispatch(CommonActions.setLoading(false));
-      dispatch(
-        CommonActions.setAlert({
-          visible: true,
-          content: error?.response?.message,
-        }),
-      );
-      console.log('error >> ', error?.response);
-    });
-};
+export const updateNotificationInList =
+  (data, id) => async (dispatch, getState) => {
+    dispatch(CommonActions.setLoading(true));
+    await axios
+      .put("/notification/update/" + id, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        dispatch(NotificationActions.updateNotificationInList(response.data));
+        dispatch(CommonActions.setLoading(false));
+      })
+      .catch((error) => {
+        dispatch(CommonActions.setLoading(false));
+        dispatch(
+          CommonActions.setAlert({
+            visible: true,
+            content: error?.response?.message,
+          })
+        );
+        console.log("error >> ", error?.response);
+      });
+  };
 
 // export const getNotificationByPage = page => async (dispatch, getState) => {
 //   const {
@@ -101,24 +107,24 @@ export const updateNotificationInList = (data, id) => async (
 //   }
 // };
 
-export const deleteNotification = id => async (dispatch, getState) => {
-  console.log('deleting notification id ======================>', id);
+export const deleteNotification = (id) => async (dispatch, getState) => {
+  console.log("deleting notification id ======================>", id);
   await axios
-    .delete('/notification/delete/' + id)
-    .then(response => {
-      console.log('response delete notification >', response);
+    .delete("/notification/delete/" + id)
+    .then((response) => {
+      console.log("response delete notification >", response);
       dispatch(CommonActions.setLoading(false));
       dispatch(NotificationActions.deleteNotificationInList(id));
     })
-    .catch(error => {
+    .catch((error) => {
       dispatch(CommonActions.setLoading(false));
       dispatch(
         CommonActions.setAlert({
           visible: true,
           content: error?.response?.message,
-        }),
+        })
       );
-      console.log('error >> ', error?.response?.message);
+      console.log("error >> ", error?.response?.message);
     });
   // const {
   //   auth: { user },
@@ -136,28 +142,28 @@ export const deleteNotification = id => async (dispatch, getState) => {
   // }
 };
 
-export const deleteNotificationByList = ids => async (dispatch, getState) => {
+export const deleteNotificationByList = (ids) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
-  console.log('selectd ids =============================>', ids);
+  console.log("selectd ids =============================>", ids);
   await axios
-    .delete('/notification/delete/multiple/' + ids)
-    .then(response => {
+    .delete("/notification/delete/multiple/" + ids)
+    .then((response) => {
       dispatch(getNotificationList());
       dispatch(CommonActions.setLoading(false));
       console.log(
-        'delete multiple notification response ===============================>',
-        response,
+        "delete multiple notification response ===============================>",
+        response
       );
     })
-    .catch(error => {
+    .catch((error) => {
       dispatch(CommonActions.setLoading(false));
       dispatch(
         CommonActions.setAlert({
           visible: true,
           content: error?.response?.message,
-        }),
+        })
       );
-      console.log('error', error?.response?.message);
+      console.log("error", error?.response?.message);
     });
   // const {
   //   auth: {user},

@@ -1,34 +1,34 @@
-import axios from 'axios';
-import CommonActions from '../reduxsauce/commonRedux';
-import ServicesRedux from '../reduxsauce/servicesRedux';
+import axios from "axios";
+import CommonActions from "../reduxsauce/commonRedux";
+import ServicesRedux from "../reduxsauce/servicesRedux";
 
 export const getServicesCategories = () => async (dispatch, getState) => {
-  const {config} = getState();
+  const { config } = getState();
   dispatch(CommonActions.setLoading(true));
   try {
     const response = await axios
-      .get('/services/services-category/list/' + config.businessId)
+      .get("/services/services-category/list/" + config.businessId)
       .then((response) => response);
     dispatch(CommonActions.setLoading(false));
     if (response.error) {
       dispatch(
-        CommonActions.setAlert({visible: true, content: response.error}),
+        CommonActions.setAlert({ visible: true, content: response.error })
       );
     } else {
       dispatch(
         ServicesRedux.getServicesCategories({
           servicesCategories: response?.data,
-        }),
+        })
       );
     }
   } catch (error) {
     dispatch(CommonActions.setLoading(false));
-    console.log('message', error?.response?.message);
+    console.log("message", error?.response?.message);
     dispatch(
       CommonActions.setAlert({
         visible: true,
         content: error?.response?.message,
-      }),
+      })
     );
   }
 };
@@ -38,7 +38,7 @@ export const getServices =
   (search = false, category = false) =>
   async (dispatch, getState) => {
     const {
-      auth: {user},
+      auth: { user },
       config,
     } = getState();
 
@@ -48,17 +48,17 @@ export const getServices =
 
     let url =
       search && category
-        ? '/services/list/' +
+        ? "/services/list/" +
           config.businessId +
-          '?search=' +
+          "?search=" +
           search +
-          '&category=' +
+          "&category=" +
           category
         : category
-        ? '/services/list/' + config.businessId + '?category=' + category
+        ? "/services/list/" + config.businessId + "?category=" + category
         : search
-        ? '/services/list/' + config.businessId + '?search=' + search
-        : '/services/list/' + config.businessId;
+        ? "/services/list/" + config.businessId + "?search=" + search
+        : "/services/list/" + config.businessId;
 
     if (cancelToken) {
       cancelToken.cancel();
@@ -67,31 +67,31 @@ export const getServices =
 
     try {
       axios
-        .get(url, {cancelToken: cancelToken.token})
+        .get(url, { cancelToken: cancelToken.token })
         .then((response) => {
-          console.log('response======================', response);
+          console.log("response======================", response);
           dispatch(
             ServicesRedux.getServices({
               services: response.data,
-            }),
+            })
           );
           dispatch(CommonActions.setLoading(false));
           dispatch(ServicesRedux.serviceSearchLoading(false));
           return response.data;
         })
         .catch((error) => {
-          console.log('error', error);
+          console.log("error", error);
           dispatch(
             CommonActions.setAlert({
               visible: true,
               content: error?.response?.message,
-            }),
+            })
           );
           dispatch(ServicesRedux.serviceSearchLoading(false));
           dispatch(CommonActions.setLoading(false));
         });
-    } catch ({message}) {
-      dispatch(CommonActions.setAlert({visible: true, content: message}));
+    } catch ({ message }) {
+      dispatch(CommonActions.setAlert({ visible: true, content: message }));
       dispatch(ServicesRedux.serviceSearchLoading(false));
       dispatch(CommonActions.setLoading(false));
     }
@@ -100,10 +100,14 @@ export const getServices =
 export const onUpdateServices = (body, id, navigation) => (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   axios
-    .put('/services/update/' + id, body)
+    .put("/services/update/" + id, body, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then(async (response) => {
       await dispatch(getServices());
-      navigation.navigate('services-list');
+      navigation.navigate("services-list");
       dispatch(CommonActions.setLoading(false));
     })
     .catch((error) => {
@@ -111,7 +115,7 @@ export const onUpdateServices = (body, id, navigation) => (dispatch) => {
         CommonActions.setAlert({
           visible: true,
           content: error?.response?.message,
-        }),
+        })
       );
       dispatch(CommonActions.setLoading(false));
     });
@@ -119,18 +123,22 @@ export const onUpdateServices = (body, id, navigation) => (dispatch) => {
 
 export const onCreateServices = (body, navigation) => (dispatch) => {
   axios
-    .post('/services/create', body)
+    .post("/services/create", body, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then(async (response) => {
       await dispatch(getServices());
       dispatch(CommonActions.setLoading(false));
-      navigation.navigate('services-list');
+      navigation.navigate("services-list");
     })
     .catch((error) => {
       dispatch(
         CommonActions.setAlert({
           visible: true,
           content: error?.response?.message,
-        }),
+        })
       );
       dispatch(CommonActions.setLoading(false));
     });
