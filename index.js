@@ -1,4 +1,3 @@
-import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { applyMiddleware, createStore } from "redux";
@@ -110,4 +109,4 @@ const persistor = persistStore(store, {}, () => {
   }
 });
 
-export { Provider, PersistGate, store, persistor, initializeAxiosData };
+export { PersistGate, store, persistor, initializeAxiosData };
