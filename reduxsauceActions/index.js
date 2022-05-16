@@ -1,14 +1,13 @@
-
-export {newRegisterAccount,emailPassWOrdLogin,verifyOTP,verifyCode,logout,resendVerificationCode,createPickupLocation,updateAddress,addressList,deleteAddress,pickupLocationList,deletePickupLocation,updateUserData} from './authActions';
-export {getCartList,addToCart,addQty,removeQty,removeToCart} from './cartAction';
-export {addNewBannerCard,updateBannerCard,removeBannerCard,updateTopProductList,updateSliderList,updateSplashList,getAppConfig} from './configActions';
-export {addFranchise,franchiseList,updateFranchise,deleteFranchise} from './franchiseAction';
-// export {getAppConfig} from './homeActions';// not used
-export {getMenuDates,getMenu} from './menuActions';
-export {getNotificationList,addNotificationInList,updateNotificationInList,deleteNotification,deleteNotificationByList} from './notificationActions';
-export {createOrder} from './orderActions';
-export {getCategories,getProducts} from './productActions';
-export {uploadProfilePicture,removeProfilePicture,editProfile} from './profileActions';
-export {getPromotionList,addPromotionInList,updatePromotionInList,deletePromotion} from './promotionActions';
-export {getServicesCategories,getServices,onUpdateServices,onCreateServices} from './servicesActions';
+module.exports = require( './authActions')
+module.exports = require('./cartAction')
+module.exports = require('./configActions')
+module.exports = require('./franchiseAction')
+// module.exports = require('./homeActions')
+module.exports = require('./menuActions')
+module.exports = require('./notificationActions')
+module.exports = require('./orderActions')
+module.exports = require('./productActions')
+module.exports = require('./profileActions')
+module.exports = require('./promotionActions')
+module.exports = require('./servicesActions')
 

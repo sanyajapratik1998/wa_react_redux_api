@@ -1,14 +1,36 @@
 {
-  "name": "wa_react_redux_api",
-  "version": "1.0.6",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "_from": "wa_react_redux_api@^1.0.5",
+  "_id": "wa_react_redux_api@1.0.6",
+  "_inBundle": false,
+  "_integrity": "sha512-dGmOnQk7AcS6PXc0Kw9duqLtCCZw2yPkoqleV1BJNvT7vqY1qSE8ddO9VRJDeEL9BzkEOQwQJkwT0qAkVtMdVA==",
+  "_location": "/wa_react_redux_api",
+  "_phantomChildren": {
+    "follow-redirects": "1.14.9",
+    "form-data": "4.0.0"
   },
-  "keywords": [],
-  "author": "Pratik Sanyaja <pratiksanyaja1998@gmail.com>",
-  "license": "ISC",
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "wa_react_redux_api@^1.0.5",
+    "name": "wa_react_redux_api",
+    "escapedName": "wa_react_redux_api",
+    "rawSpec": "^1.0.5",
+    "saveSpec": null,
+    "fetchSpec": "^1.0.5"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/wa_react_redux_api/-/wa_react_redux_api-1.0.6.tgz",
+  "_shasum": "3963eb4edbcd942287d1012f49685d5baa38cbac",
+  "_spec": "wa_react_redux_api@^1.0.5",
+  "_where": "E:\\wa-ecommerce-next-theme",
+  "author": {
+    "name": "Pratik Sanyaja",
+    "email": "pratiksanyaja1998@gmail.com"
+  },
+  "bundleDependencies": false,
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.3",
     "axios": "^0.27.2",
@@ -18,5 +40,15 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
     "reduxsauce": "^1.2.1"
-  }
+  },
+  "deprecated": false,
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "wa_react_redux_api",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.6"
 }

@@ -1,4 +1,4 @@
-import {createActions, createReducer} from 'reduxsauce';
+const {createActions, createReducer} = require('reduxsauce')
 
 const INITIAL_STATE = {
   id: null,
@@ -12,8 +12,8 @@ const {Types, Creators} = createActions({
   setOrders: ['data'],
 });
 
-export const OrderTypes = Types;
-export default Creators;
+ const OrderTypes = Types;
+
 
 /* ------------- Reducers ------------- */
 
@@ -35,7 +35,11 @@ const setOrders = (state, {data}) => ({
 
 /* ------------- Hookup Reducers To Types ------------- */
 
-export const reducer = createReducer(INITIAL_STATE, {
+ const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_ORDERS]: getOrders,
   [Types.SET_ORDERS]: setOrders,
 });
+
+
+// module.exports = Creators
+module.exports = {...Creators,OrderTypes,reducer}

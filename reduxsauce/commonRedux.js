@@ -1,5 +1,5 @@
-import { REHYDRATE } from 'redux-persist';
-import { createActions, createReducer } from 'reduxsauce';
+const { REHYDRATE } = require('redux-persist')
+const { createActions, createReducer } = require('reduxsauce')
 
 const INITIAL_STATE = {
   alert: {
@@ -45,8 +45,7 @@ const { Types, Creators } = createActions({
   setConnected: ['connect']
 });
 
-export const CommonTypes = Types;
-export default Creators;
+ const CommonTypes = Types;
 
 /* ------------- Reducers ------------- */
 
@@ -104,7 +103,7 @@ const rehydrate = () => INITIAL_STATE;
 
 /* ------------- Hookup Reducers To Types ------------- */
 
-export const reducer = createReducer(INITIAL_STATE, {
+const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_LOADING]: setLoading,
   [Types.SET_LOGIN_FROM]: setLoginFrom,
   [Types.SET_ALERT]: setAlert,
@@ -116,3 +115,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_CONNECTED]: setConnected,
   [REHYDRATE]: rehydrate
 });
+// module.exports = 
+// module.exports = Creators
+module.exports = {...Creators,CommonTypes,reducer}

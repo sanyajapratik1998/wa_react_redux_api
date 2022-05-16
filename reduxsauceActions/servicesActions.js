@@ -1,8 +1,8 @@
-import axios from "axios";
-import CommonActions from "../reduxsauce/commonRedux";
-import ServicesRedux from "../reduxsauce/servicesRedux";
+const axios = require('axios')
+const CommonActions = require('../reduxsauce/commonRedux')
+const ServicesRedux = require('../reduxsauce/servicesRedux')
 
-export const getServicesCategories = () => async (dispatch, getState) => {
+ const getServicesCategories = () => async (dispatch, getState) => {
   const { config } = getState();
   dispatch(CommonActions.setLoading(true));
   try {
@@ -34,7 +34,7 @@ export const getServicesCategories = () => async (dispatch, getState) => {
 };
 
 let cancelToken = axios.CancelToken.source();
-export const getServices =
+ const getServices =
   (search = false, category = false) =>
   async (dispatch, getState) => {
     const {
@@ -97,7 +97,7 @@ export const getServices =
     }
   };
 
-export const onUpdateServices = (body, id, navigation) => (dispatch) => {
+ const onUpdateServices = (body, id, navigation) => (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   axios
     .put("/services/update/" + id, body, {
@@ -121,7 +121,7 @@ export const onUpdateServices = (body, id, navigation) => (dispatch) => {
     });
 };
 
-export const onCreateServices = (body, navigation) => (dispatch) => {
+ const onCreateServices = (body, navigation) => (dispatch) => {
   axios
     .post("/services/create", body, {
       headers: {
@@ -143,3 +143,5 @@ export const onCreateServices = (body, navigation) => (dispatch) => {
       dispatch(CommonActions.setLoading(false));
     });
 };
+
+module.exports = {getServicesCategories,getServices,onUpdateServices,onCreateServices}

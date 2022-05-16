@@ -1,4 +1,4 @@
-import { createActions, createReducer } from 'reduxsauce';
+const { createActions, createReducer } = require('reduxsauce')
 
 const INITIAL_STATE = {
   referral: null,
@@ -24,8 +24,7 @@ const { Types, Creators } = createActions({
   setTabBadge: ['data']
 });
 
-export const HomeTypes = Types;
-export default Creators;
+const HomeTypes = Types;
 
 /* ------------- Reducers ------------- */
 
@@ -62,10 +61,12 @@ const setTabBadge = (state, { data }) => ({
 
 /* ------------- Hookup Reducers To Types ------------- */
 
-export const reducer = createReducer(INITIAL_STATE, {
+ const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_APP_CONFIG]: setAppConfig,
   [Types.SET_CAMPAIGN]: setCampaign,
   [Types.SET_REFERRAL]: setReferral,
   [Types.SET_COMPANIES]: setCompanies,
   [Types.SET_TAB_BADGE]: setTabBadge
 });
+// module.exports = Creators
+module.exports = {...Creators,HomeTypes,reducer}

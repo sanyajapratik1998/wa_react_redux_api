@@ -1,4 +1,4 @@
-import {createActions, createReducer} from 'reduxsauce';
+const {createActions, createReducer} = require('reduxsauce')
 
 const INITIAL_STATE = [];
 
@@ -11,8 +11,7 @@ const {Types, Creators} = createActions({
   deletePromotionInList: ['data'],
 });
 
-export const PromotionTypes = Types;
-export default Creators;
+ const PromotionTypes = Types;
 
 /* ------------- Reducers ------------- */
 
@@ -43,9 +42,12 @@ const deletePromotionInList = (state, {data}) => {
 
 /* ------------- Hookup Reducers To Types ------------- */
 
-export const reducer = createReducer(INITIAL_STATE, {
+ const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_PROMOTION]: setPromotion,
   [Types.ADD_PROMOTION_IN_LIST]: addPromotionInList,
   [Types.UPDATE_PROMOTION_IN_LIST]: updatePromotionInList,
   [Types.DELETE_PROMOTION_IN_LIST]: deletePromotionInList,
 });
+
+// module.exports = Creators
+module.exports = {...Creators,PromotionTypes,reducer}

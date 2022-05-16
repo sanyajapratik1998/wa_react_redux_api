@@ -1,8 +1,8 @@
-import CommonActions from '../reduxsauce/commonRedux';
-import cartAction from '../reduxsauce/cartRedux';
-import axios from 'axios';
+const CommonActions = require('../reduxsauce/commonRedux')
+const cartAction = require('../reduxsauce/cartRedux')
+const axios = require('axios')
 
-export const getCartList = (cartList) => async (dispatch) => {
+ const getCartList = (cartList) => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   await axios
     .get('/order/cart/list')
@@ -26,7 +26,7 @@ export const getCartList = (cartList) => async (dispatch) => {
   return cartList;
 };
 
-export const addToCart =
+ const addToCart =
   (product, qty = 1, message) =>
   (dispatch, getState) => {
     const {
@@ -165,7 +165,7 @@ export const addToCart =
     // dispatch(CommonActions.setLoading(false));
   };
 
-export const addQty = (product) => async (dispatch) => {
+ const addQty = (product) => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   await axios
     .put('/order/cart/update/' + product.id, {
@@ -193,7 +193,7 @@ export const addQty = (product) => async (dispatch) => {
   return product;
 };
 
-export const removeQty = (product) => async (dispatch) => {
+ const removeQty = (product) => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   await axios
     .put('/order/cart/update/' + product.id, {
@@ -222,7 +222,7 @@ export const removeQty = (product) => async (dispatch) => {
   return product;
 };
 
-export const removeToCart = (item) => (dispatch, getState) => {
+ const removeToCart = (item) => (dispatch, getState) => {
   // const {cart} = getState();
   // const filterData = cart.filter(x => x?.id === product.id);
   // const filterData = cart.filter(x => x?.resposeData?.product === product.id);
@@ -253,3 +253,4 @@ export const removeToCart = (item) => (dispatch, getState) => {
   // console.log('product removes', product);
   // return product;
 };
+module.exports= {getCartList,addToCart,addQty,removeQty,removeToCart}

@@ -1,4 +1,4 @@
-import {createActions, createReducer} from 'reduxsauce';
+const {createActions, createReducer} = require('reduxsauce')
 
 const INITIAL_STATE = [];
 
@@ -12,8 +12,8 @@ const {Types, Creators} = createActions({
   resetTransactionHistoryVC: ['data'],
 });
 
-export const NotificationTypes = Types;
-export default Creators;
+ const NotificationTypes = Types;
+
 
 /* ------------- Reducers ------------- */
 
@@ -48,10 +48,13 @@ const resetTransactionHistoryVC = (state, {data}) => ({
 
 /* ------------- Hookup Reducers To Types ------------- */
 
-export const reducer = createReducer(INITIAL_STATE, {
+ const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_NOTIFICATION]: setNotification,
   [Types.ADD_NOTIFICATION_IN_LIST]: addNotificationInList,
   [Types.UPDATE_NOTIFICATION_IN_LIST]: updateNotificationInList,
   [Types.DELETE_NOTIFICATION_IN_LIST]: deleteNotificationInList,
   [Types.RESET_TRANSACTION_HISTORY_VC]: resetTransactionHistoryVC,
 });
+
+// module.exports = Creators
+module.exports ={ ...Creators,NotificationTypes,reducer}

@@ -1,8 +1,8 @@
-import axios from 'axios';
-import CommonActions from '../reduxsauce/commonRedux';
-import ProductActions from '../reduxsauce/productRedux';
+const axios = require('axios')
+const CommonActions = require('../reduxsauce/commonRedux')
+const ProductActions = require('../reduxsauce/productRedux')
 
-export const getCategories = () => async (dispatch, getState) => {
+ const getCategories = () => async (dispatch, getState) => {
   const {order, config} = getState();
   dispatch(CommonActions.setLoading(true));
   try {
@@ -36,7 +36,7 @@ export const getCategories = () => async (dispatch, getState) => {
 };
 
 let cancelToken = axios.CancelToken.source();
-export const getProducts =
+ const getProducts =
   (search = false, category = false) =>
   async (dispatch, getState) => {
     const {
@@ -101,3 +101,4 @@ export const getProducts =
     }
  
   };
+module.exports ={getCategories,getProducts}

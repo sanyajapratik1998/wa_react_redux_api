@@ -1,5 +1,5 @@
-import axios from 'axios';
-import {createActions, createReducer} from 'reduxsauce';
+const axios = require('axios')
+const {createActions, createReducer} = require('reduxsauce')
 
 const INITIAL_STATE = {
   user: null,
@@ -21,8 +21,7 @@ const {Types, Creators} = createActions({
   setPickupLocation: ['pickupLocation'],
 });
 
-export const AuthTypes = Types;
-export default Creators;
+ const AuthTypes = Types;
 
 /* ------------- Reducers ------------- */
 
@@ -64,7 +63,7 @@ const setPickupLocation = (state, {pickupLocation}) => ({
 });
 /* ------------- Hookup Reducers To Types ------------- */
 
-export const reducer = createReducer(INITIAL_STATE, {
+const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_USER]: setUser,
   [Types.SET_TOUCH_ID]: setTouchId,
   [Types.SET_VERIFY]: setVerify,
@@ -73,3 +72,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_ADDRESS]: setAddress,
   [Types.SET_PICKUP_LOCATION]: setPickupLocation,
 });
+
+// module.exports =  // default
+module.exports = {...Creators,AuthTypes,reducer}

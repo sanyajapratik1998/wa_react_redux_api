@@ -1,10 +1,10 @@
-import axios from "axios";
-import CommonActions from "../reduxsauce/commonRedux";
-import PromotionActions from "../reduxsauce/promotionRedux";
+const axios = require('axios')
+const CommonActions = require('../reduxsauce/commonRedux')
+const PromotionActions = require('../reduxsauce/promotionRedux')
 
 const limitPage = 10;
 
-export const getPromotionList = (data) => async (dispatch, getState) => {
+ const getPromotionList = (data) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   const { config } = getState();
   await axios
@@ -26,7 +26,7 @@ export const getPromotionList = (data) => async (dispatch, getState) => {
     });
 };
 
-export const addPromotionInList =
+ const addPromotionInList =
   (data, navigation) => async (dispatch, getState) => {
     dispatch(CommonActions.setLoading(true));
     await axios
@@ -51,7 +51,7 @@ export const addPromotionInList =
         console.log("error >> ", error?.response);
       });
   };
-export const updatePromotionInList =
+ const updatePromotionInList =
   (data, id, navigation) => async (dispatch, getState) => {
     dispatch(CommonActions.setLoading(true));
     await axios
@@ -77,7 +77,7 @@ export const updatePromotionInList =
       });
   };
 
-export const deletePromotion =
+ const deletePromotion =
   (id, navigation) => async (dispatch, getState) => {
     console.log("deleting promotion id ======================>", id);
     await axios
@@ -99,3 +99,5 @@ export const deletePromotion =
         console.log("error >> ", error?.response);
       });
   };
+
+  module.exports = {getPromotionList,addPromotionInList,updatePromotionInList,deletePromotion}

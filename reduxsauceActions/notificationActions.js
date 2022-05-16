@@ -1,10 +1,10 @@
-import axios from "axios";
-import CommonActions from "../reduxsauce/commonRedux";
-import NotificationActions from "../reduxsauce/notificationRedux";
+const axios = require('axios')
+const CommonActions = require('../reduxsauce/commonRedux')
+const NotificationActions = require('../reduxsauce/notificationRedux')
 
 const limitPage = 10;
 
-export const getNotificationList = (data) => async (dispatch, getState) => {
+ const getNotificationList = (data) => async (dispatch, getState) => {
   const { config } = getState();
   dispatch(CommonActions.setLoading(true));
   await axios
@@ -25,7 +25,7 @@ export const getNotificationList = (data) => async (dispatch, getState) => {
     });
 };
 
-export const addNotificationInList = (data) => async (dispatch, getState) => {
+ const addNotificationInList = (data) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   await axios
     .post("/notification/create", data, {
@@ -48,7 +48,7 @@ export const addNotificationInList = (data) => async (dispatch, getState) => {
       console.log("error >> ", error?.response);
     });
 };
-export const updateNotificationInList =
+ const updateNotificationInList =
   (data, id) => async (dispatch, getState) => {
     dispatch(CommonActions.setLoading(true));
     await axios
@@ -107,7 +107,7 @@ export const updateNotificationInList =
 //   }
 // };
 
-export const deleteNotification = (id) => async (dispatch, getState) => {
+ const deleteNotification = (id) => async (dispatch, getState) => {
   console.log("deleting notification id ======================>", id);
   await axios
     .delete("/notification/delete/" + id)
@@ -142,7 +142,7 @@ export const deleteNotification = (id) => async (dispatch, getState) => {
   // }
 };
 
-export const deleteNotificationByList = (ids) => async (dispatch, getState) => {
+ const deleteNotificationByList = (ids) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   console.log("selectd ids =============================>", ids);
   await axios
@@ -257,3 +257,4 @@ export const deleteNotificationByList = (ids) => async (dispatch, getState) => {
 //   const response = await putMemberMessageAsRead(messageId, user.token);
 //   dispatch(HomeActions.setTabBadge(response));
 // };
+module.exports = {getNotificationList,addNotificationInList,updateNotificationInList,deleteNotification,deleteNotificationByList}

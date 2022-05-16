@@ -1,10 +1,8 @@
-import {combineReducers} from 'redux';
-import {resettableReducer} from 'reduxsauce';
-
-import {AuthTypes} from './authRedux';
-
+const {combineReducers} = require('redux')
+const {resettableReducer} = require('reduxsauce')
+const {AuthTypes} = require('./authRedux')
+// console.log('AuthTypes.LOGOUT',require('./authRedux'));
 const resettable = resettableReducer(AuthTypes.LOGOUT);
-
 const rootReducer = combineReducers({
   auth: resettable(require('./authRedux').reducer),
   common: resettable(require('./commonRedux').reducer),
@@ -20,5 +18,4 @@ const rootReducer = combineReducers({
   config: require('./configRedux').reducer,
   franchise: resettable(require('./franchiseRedux').reducer),
 });
-
-export default rootReducer;
+module.exports = {rootReducer} 

@@ -1,8 +1,8 @@
-import axios from 'axios';
-import ConfigAction from '../reduxsauce/configRedux';
-import CommonActions from '../reduxsauce/commonRedux';
+const axios = require('axios')
+const ConfigAction = require('../reduxsauce/configRedux')
+const CommonActions = require('../reduxsauce/commonRedux')
 
-export const addNewBannerCard = (data) => async (dispatch, getState) => {
+ const addNewBannerCard = (data) => async (dispatch, getState) => {
   const {config} = getState();
   console.log('config', config);
   try {
@@ -30,7 +30,7 @@ export const addNewBannerCard = (data) => async (dispatch, getState) => {
   }
 };
 
-export const updateBannerCard = (data) => async (dispatch, getState) => {
+ const updateBannerCard = (data) => async (dispatch, getState) => {
   const {config} = getState();
   try {
     const response = await axios.patch(
@@ -56,7 +56,7 @@ export const updateBannerCard = (data) => async (dispatch, getState) => {
   }
 };
 
-export const removeBannerCard = (index) => async (dispatch, getState) => {
+ const removeBannerCard = (index) => async (dispatch, getState) => {
   const {config} = getState();
 
   let bannerCardList = [...config?.appHomePage?.bannerCard];
@@ -85,7 +85,7 @@ export const removeBannerCard = (index) => async (dispatch, getState) => {
   }
 };
 
-export const updateTopProductList = (data) => async (dispatch, getState) => {
+ const updateTopProductList = (data) => async (dispatch, getState) => {
   console.log('data', data);
   const {config} = getState();
   try {
@@ -112,7 +112,7 @@ export const updateTopProductList = (data) => async (dispatch, getState) => {
   }
 };
 
-export const updateSliderList = (data) => async (dispatch, getState) => {
+ const updateSliderList = (data) => async (dispatch, getState) => {
   console.log('data', data);
   const {config} = getState();
   try {
@@ -139,7 +139,7 @@ export const updateSliderList = (data) => async (dispatch, getState) => {
   }
 };
 
-export const updateSplashList = (data) => async (dispatch, getState) => {
+ const updateSplashList = (data) => async (dispatch, getState) => {
   console.log('data', data);
   const {config} = getState();
   try {
@@ -171,7 +171,7 @@ export const updateSplashList = (data) => async (dispatch, getState) => {
   }
 };
 
-export const getAppConfig = () => async (dispatch, getState) => {
+ const getAppConfig = () => async (dispatch, getState) => {
   const {config} = getState();
   dispatch(CommonActions.setLoading(true));
 
@@ -193,3 +193,4 @@ export const getAppConfig = () => async (dispatch, getState) => {
     dispatch(CommonActions.setLoading(false));
   }
 };
+module.exports = {addNewBannerCard,updateBannerCard,removeBannerCard,updateTopProductList,updateSliderList,updateSplashList,getAppConfig}

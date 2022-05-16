@@ -1,4 +1,4 @@
-import {createActions, createReducer} from 'reduxsauce';
+const {createActions, createReducer} = require('reduxsauce')
 
 const INITIAL_STATE = {
   servicesCategories: [],
@@ -14,8 +14,7 @@ const {Types, Creators} = createActions({
   serviceSearchLoading: ['serviceSearchLoading'],
 });
 
-export const CartTypes = Types;
-export default Creators;
+const CartTypes = Types;
 
 /* ------------- Reducers ------------- */
 const getServicesCategories = (state, {data}) => {
@@ -37,8 +36,11 @@ const serviceSearchLoading = (state, {serviceSearchLoading}) => ({
 
 /* ------------- Hookup Reducers To Types ------------- */
 
-export const reducer = createReducer(INITIAL_STATE, {
+const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_SERVICES_CATEGORIES]: getServicesCategories,
   [Types.GET_SERVICES]: getServices,
   [Types.SERVICE_SEARCH_LOADING]: serviceSearchLoading,
 });
+
+// module.exports = Creators
+module.exports = {...Creators,CartTypes,reducer}

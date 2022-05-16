@@ -1,8 +1,8 @@
-import axios from 'axios';
-import CommonActions from '../reduxsauce/commonRedux';
-import FranchiseAction from '../reduxsauce/franchiseRedux';
+const axios = require('axios')
+const CommonActions = require('../reduxsauce/commonRedux')
+const FranchiseAction = require('../reduxsauce/franchiseRedux')
 
-export const addFranchise =
+ const addFranchise =
   (body, navigation) => async (dispatch, getState) => {
     const {franchise} = getState();
 
@@ -31,7 +31,7 @@ export const addFranchise =
       });
   };
 
-export const franchiseList = () => async (dispatch, getState) => {
+ const franchiseList = () => async (dispatch, getState) => {
   const {franchise, config} = getState();
 
   console.log('calling-->');
@@ -55,7 +55,7 @@ export const franchiseList = () => async (dispatch, getState) => {
     });
 };
 
-export const updateFranchise =
+ const updateFranchise =
   (body, id, navigation) => async (dispatch, getState) => {
     const {franchise} = getState();
 
@@ -85,7 +85,7 @@ export const updateFranchise =
       });
   };
 
-export const deleteFranchise = (id) => async (dispatch, getState) => {
+ const deleteFranchise = (id) => async (dispatch, getState) => {
   const {franchise} = getState();
   dispatch(CommonActions.setLoading(true));
   axios
@@ -112,3 +112,5 @@ export const deleteFranchise = (id) => async (dispatch, getState) => {
       );
     });
 };
+
+module.exports = {addFranchise,franchiseList,updateFranchise,deleteFranchise}

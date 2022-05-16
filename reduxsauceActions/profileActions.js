@@ -1,8 +1,8 @@
-import axios from "axios";
-import AuthActions from "../reduxsauce/authRedux";
-import CommonActions from "../reduxsauce/commonRedux";
+const axios = require('axios')
+const CommonActions = require('../reduxsauce/commonRedux')
+const AuthActions = require('../reduxsauce/authRedux')
 
-export const uploadProfilePicture = (image) => async (dispatch, getState) => {
+ const uploadProfilePicture = (image) => async (dispatch, getState) => {
   const {
     auth: { profile, user },
   } = getState();
@@ -39,7 +39,7 @@ export const uploadProfilePicture = (image) => async (dispatch, getState) => {
   }
 };
 
-export const removeProfilePicture = () => async (dispatch, getState) => {
+ const removeProfilePicture = () => async (dispatch, getState) => {
   const {
     auth: { profile, user },
   } = getState();
@@ -69,7 +69,7 @@ export const removeProfilePicture = () => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(false));
 };
 
-export const editProfile = (body, navigation) => async (dispatch, getState) => {
+ const editProfile = (body, navigation) => async (dispatch, getState) => {
   const {
     auth: { profile, user },
   } = getState();
@@ -107,3 +107,4 @@ export const editProfile = (body, navigation) => async (dispatch, getState) => {
   }
   dispatch(CommonActions.setLoading(false));
 };
+module.exports ={uploadProfilePicture,removeProfilePicture,editProfile}

@@ -1,8 +1,8 @@
-import axios from 'axios';
-import CommonActions from '../reduxsauce/commonRedux';
-import OrderActions from '../reduxsauce/orderRedux';
+const axios = require('axios')
+const CommonActions = require('../reduxsauce/commonRedux')
+const OrderActions = require('../reduxsauce/orderRedux')
 
-export const createOrder = params => async (dispatch, getState) => {
+const createOrder = params => async (dispatch, getState) => {
   console.log('params', params);
   const {config, cart} = getState();
   dispatch(CommonActions.setLoading(true));
@@ -53,3 +53,4 @@ export const createOrder = params => async (dispatch, getState) => {
       return false;
     });
 };
+module.exports = {createOrder}

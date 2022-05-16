@@ -1,11 +1,12 @@
-import { PersistGate } from "redux-persist/integration/react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { applyMiddleware, createStore } from "redux";
-import { persistReducer, persistStore } from "redux-persist";
-import thunk from "redux-thunk";
-import logger from "redux-logger";
-import axios from "axios";
-import rootReducer from "./reduxsauce/";
+const { PersistGate } = require('redux-persist/integration/react')
+const AsyncStorage = require('@react-native-async-storage/async-storage').default
+const { applyMiddleware, createStore } = require('redux')
+const  { persistReducer, persistStore } = require('redux-persist')
+const thunk = require('redux-thunk').default
+const logger = require('redux-logger').default
+const axios = require('axios')
+const {rootReducer} = require('./reduxsauce')
+
 // import Constants from 'expo-constants';
 
 // const ENV = Constants.manifest.extra?.ENV;
@@ -30,7 +31,7 @@ const initializeAxiosData = (url) => {
   console.log("call and set default url");
   axios.defaults.baseURL = url;
 };
-window.store = store;
+// window.store = store;
 
 const getErrorMessage = (data) => {
   // check for data is object
@@ -109,4 +110,4 @@ const persistor = persistStore(store, {}, () => {
   }
 });
 
-export { PersistGate, store, persistor, initializeAxiosData };
+module.exports = {  PersistGate, store, persistor, initializeAxiosData };

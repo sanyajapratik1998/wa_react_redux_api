@@ -1,9 +1,8 @@
-import axios from 'axios';
+const axios = require('axios')
+const AuthActions = require('../reduxsauce/authRedux')
+const CommonActions = require('../reduxsauce/commonRedux')
 
-import AuthActions from '../reduxsauce/authRedux';
-import CommonActions from '../reduxsauce/commonRedux';
-
-export const newRegisterAccount =
+ const newRegisterAccount =
   ({data, email, password, phone, first_name, last_name}, navigation) =>
   async (dispatch, getState) => {
     dispatch(CommonActions.setLoading(true));
@@ -42,7 +41,7 @@ export const newRegisterAccount =
     dispatch(CommonActions.setLoading(false));
   };
 
-export const emailPassWOrdLogin =
+const emailPassWOrdLogin =
   (username, password, navigation) => async (dispatch, getState) => {
     const {config, common} = getState();
     dispatch(CommonActions.setLoading(true));
@@ -100,7 +99,7 @@ export const emailPassWOrdLogin =
       });
   };
 
-export const verifyOTP = (data, navigation) => async (dispatch, getState) => {
+const verifyOTP = (data, navigation) => async (dispatch, getState) => {
   const {config, common} = getState();
   dispatch(CommonActions.setLoading(true));
   console.log('data', data);
@@ -135,7 +134,7 @@ export const verifyOTP = (data, navigation) => async (dispatch, getState) => {
   }
 };
 
-export const verifyCode = (data, navigation) => async (dispatch) => {
+ const verifyCode = (data, navigation) => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   try {
     // const response = await verifyCodeApi(data);
@@ -162,7 +161,7 @@ export const verifyCode = (data, navigation) => async (dispatch) => {
   dispatch(CommonActions.setLoading(false));
 };
 
-export const logout = (navigation,platform) => async (dispatch, getState) => {
+ const logout = (navigation,platform) => async (dispatch, getState) => {
   const {config} = getState;
 console.log('platform-------->>>>>>',platform);
   dispatch(CommonActions.setLoading(true));
@@ -196,7 +195,7 @@ console.log('platform-------->>>>>>',platform);
     });
 };
 
-export const resendVerificationCode = (phone) => async (dispatch) => {
+ const resendVerificationCode = (phone) => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   try {
     // const response = await resendVerificationCodeApi(phone);
@@ -214,11 +213,11 @@ export const resendVerificationCode = (phone) => async (dispatch) => {
   dispatch(CommonActions.setLoading(false));
 };
 
-export const createPickupLocation = (data) => async (dispatch, getState) => {};
+ const createPickupLocation = (data) => async (dispatch, getState) => {};
 
-export const updateAddress = () => async (dispatch, getState) => {};
+ const updateAddress = () => async (dispatch, getState) => {};
 
-export const addressList = () => async (dispatch) => {
+ const addressList = () => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   axios
     .get('/user/address/list')
@@ -233,7 +232,7 @@ export const addressList = () => async (dispatch) => {
     });
 };
 
-export const deleteAddress = (id) => async (dispatch, getState) => {
+ const deleteAddress = (id) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   axios
     .delete('/user/address/delete/' + id)
@@ -247,7 +246,7 @@ export const deleteAddress = (id) => async (dispatch, getState) => {
       dispatch(CommonActions.setLoading(false));
     });
 };
-export const pickupLocationList = () => async (dispatch) => {
+ const pickupLocationList = () => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   axios
     .get('/delivery/pickup/location/list')
@@ -262,7 +261,7 @@ export const pickupLocationList = () => async (dispatch) => {
     });
 };
 
-export const deletePickupLocation = (id) => async (dispatch, getState) => {
+ const deletePickupLocation = (id) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   axios
     .delete('/delivery/pickup/location/delete/' + id)
@@ -277,7 +276,9 @@ export const deletePickupLocation = (id) => async (dispatch, getState) => {
     });
 };
 
-export const updateUserData = (data) => async (dispatch, getState) => {
+ const updateUserData = (data) => async (dispatch, getState) => {
   const {auth} = getState();
   dispatch(AuthActions.setUser({...auth?.user, setting: data}));
 };
+
+module.exports = {newRegisterAccount,emailPassWOrdLogin,verifyOTP,verifyCode,logout,resendVerificationCode,createPickupLocation,updateAddress,addressList,deleteAddress,pickupLocationList,deletePickupLocation,updateUserData}

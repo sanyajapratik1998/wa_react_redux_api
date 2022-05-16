@@ -1,7 +1,7 @@
-import axios from 'axios';
-import CommonActions from '../reduxsauce/commonRedux';
-import MenuRedux from '../reduxsauce/menuRedux';
-import moment from 'moment';
+const axios = require('axios')
+const CommonActions = require('../reduxsauce/commonRedux')
+const MenuRedux = require('../reduxsauce/menuRedux')
+const moment = require('moment')
 
  const isDateValid = (date) =>
   date?.split('-')[0] &&
@@ -13,7 +13,7 @@ import moment from 'moment';
   moment(date, 'YYYY-M-D').isValid();
 
 
-export const getMenuDates = () => async (dispatch, getState) => {
+ const getMenuDates = () => async (dispatch, getState) => {
   
   let days = [];
   days.push("Show All")
@@ -31,7 +31,7 @@ export const getMenuDates = () => async (dispatch, getState) => {
 
 let cancelToken = axios.CancelToken.source();
 
-export const getMenu =
+ const getMenu =
   (search = false, available_at = false) =>
   async (dispatch, getState) => {
     const {
@@ -93,4 +93,5 @@ export const getMenu =
     }
   };
 
+  module.exports = {getMenuDates,getMenu}
 
