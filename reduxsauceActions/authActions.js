@@ -3,7 +3,7 @@ const AuthActions = require('../reduxsauce/authRedux')
 const CommonActions = require('../reduxsauce/commonRedux')
 
  const newRegisterAccount =
-  ({data, email, password, phone, first_name, last_name}, navigation) =>
+  ({data, email, password, phone, first_name, last_name}, callback) =>
   async (dispatch, getState) => {
     dispatch(CommonActions.setLoading(true));
     try {
@@ -21,19 +21,21 @@ const CommonActions = require('../reduxsauce/commonRedux')
         .then((response) => response.data);
       console.log('new Registration :: ', response);
       if (!response.is_active) {
-        navigation.navigate('verify-otp', {user: response});
+        callback("verify-otp",{user: response})
+        // navigation.navigate('verify-otp', {user: response});
       } else {
         dispatch(AuthActions.setUser(response));
+        callback("success")
       }
     } catch (e) {
-      console.log(e.response);
+      console.log(e);
       // console.log(typeof e.response.data == 'object');
       // console.log(e.response.data[Object.keys(e.response.data)[0]]);
 
-      dispatch(
+      e?.response && dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: e.response.message,
+          content: e?.response?.message,
         }),
       );
     }
