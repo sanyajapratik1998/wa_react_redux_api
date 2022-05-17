@@ -42,7 +42,7 @@ const CommonActions = require('../reduxsauce/commonRedux')
   };
 
 const emailPassWOrdLogin =
-  (username, password, navigation) => async (dispatch, getState) => {
+  (username, password, callback) => async (dispatch, getState) => {
     const {config, common} = getState();
     dispatch(CommonActions.setLoading(true));
     // try {
@@ -56,39 +56,49 @@ const emailPassWOrdLogin =
         business: getState().config.businessId,
       })
       .then((response) => {
-        console.log('EmailPasswordLogin', response.data);
-        if (['local', 'development'].includes(config.ENV)) {
-          if (!response.data.approved) {
-            dispatch(CommonActions.setLoading(false));
-            return navigation.navigate('pending-approvement');
-          }
-        }
+        console.log('EmailPasswordLogin', response);
+        // if (['local', 'development'].includes(config.ENV)) {
+        //   if (!response.data.approved) {
+        //     dispatch(CommonActions.setLoading(false));
+        //     return navigation.navigate('pending-approvement');
+        //   }
+        // }
         if (response.data.is_active) {
           dispatch(AuthActions.setUser(response.data));
           dispatch(CommonActions.setLoading(false));
-          if (common.loginFrom) {
-            navigation.replace(common.loginFrom);
-            dispatch(CommonActions.setLoginFrom(null));
-            return;
-          }
-          !config?.theme?.isLoginRequired &&
-            (config?.theme?.showTabBar
-              ? navigation.replace('app')
-              : navigation.replace('home'));
+          callback("success")
+          // if (common.loginFrom) {
+          //   navigation.replace(common.loginFrom);
+          //   dispatch(CommonActions.setLoginFrom(null));
+          //   return;
+          // }
+          // config?.theme?.isLoginRequired &&
+          //   (config?.theme?.showTabBar
+          //     ? navigation.replace('app')
+          //     : navigation.replace('home'));
         } else {
           dispatch(CommonActions.setLoading(false));
-          navigation.navigate('verify-otp', {
-            user: {
-              ...response?.data,
-              email: username,
-              business: getState().config?.businessId,
-            },
-          });
+          callback("verify-otp",{
+              user: {
+                ...response?.data,
+                email: username,
+                business: getState().config?.businessId,
+              },
+            });
+
+          // navigation.navigate('verify-otp', {
+          //   user: {
+          //     ...response?.data,
+          //     email: username,
+          //     business: getState().config?.businessId,
+          //   },
+          // });
         }
       })
       // navigation.navigate('Home');
       // }
       .catch((e) => {
+        console.log('e.response ---<',e.response);
         dispatch(
           CommonActions.setAlert({
             visible: true,
