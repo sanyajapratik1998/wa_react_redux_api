@@ -31,6 +31,8 @@ const initializeAxiosData = (url) => {
   console.log("call and set default url");
   axios.defaults.baseURL = url;
 };
+
+const setDefaultBaseURL = initializeAxiosData;
 // window.store = store;
 
 const getErrorMessage = (data) => {
@@ -110,4 +112,4 @@ const persistor = persistStore(store, {}, () => {
   }
 });
 
-module.exports = {  PersistGate, store, persistor, initializeAxiosData };
+module.exports = {  PersistGate, store, persistor, initializeAxiosData, setDefaultBaseURL };
