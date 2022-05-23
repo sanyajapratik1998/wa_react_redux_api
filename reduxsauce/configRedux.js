@@ -15,7 +15,7 @@ const addBannerCard = (state, {data}) => {
     ...state,
     homePage: {
       ...state.homePage,
-      bannerCard: [...state?.homePage?.bannerCard, data],
+      bannerCard: [...state.homePage.bannerCard, data],
     },
   };
 };

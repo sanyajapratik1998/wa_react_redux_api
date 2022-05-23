@@ -21,7 +21,7 @@ const setCart = (state, {data}) => {
   console.log('data', data);
   // state = data;
   // return {...state, list: data};
-  return {...state, list: data?.data, count: data?.count};
+  return {...state, list: data.data, count: data.count};
 };
 
 const addToCart = (state, {data}) => ({

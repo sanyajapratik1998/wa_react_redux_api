@@ -20,7 +20,7 @@ const CartTypes = Types;
 const getServicesCategories = (state, {data}) => {
   return {
     ...state,
-    servicesCategories: data?.servicesCategories,
+    servicesCategories: data.servicesCategories,
   };
 };
 

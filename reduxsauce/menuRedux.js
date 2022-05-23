@@ -20,7 +20,7 @@ const {Types, Creators} = createActions({
 const getMenuDates = (state, {data}) => {
   return {
     ...state,
-    menuDates: data?.menuDates,
+    menuDates: data.menuDates,
   };
 };
 
