@@ -17,17 +17,17 @@ const ServicesRedux = require('../reduxsauce/servicesRedux')
     } else {
       dispatch(
         ServicesRedux.getServicesCategories({
-          servicesCategories: response?.data,
+          servicesCategories: response.data,
         })
       );
     }
   } catch (error) {
     dispatch(CommonActions.setLoading(false));
-    console.log("message", error?.response?.message);
+    console.log("message",  error.response.message);
     dispatch(
       CommonActions.setAlert({
         visible: true,
-        content: error?.response?.message,
+        content:  error.response.message,
       })
     );
   }
@@ -49,16 +49,16 @@ let cancelToken = axios.CancelToken.source();
     let url =
       search && category
         ? "/services/list/" +
-          config.businessId +
+          config['businessId'] +
           "?search=" +
           search +
           "&category=" +
           category
         : category
-        ? "/services/list/" + config.businessId + "?category=" + category
+        ? "/services/list/" + config['businessId'] + "?category=" + category
         : search
-        ? "/services/list/" + config.businessId + "?search=" + search
-        : "/services/list/" + config.businessId;
+        ? "/services/list/" + config['businessId'] + "?search=" + search
+        : "/services/list/" + config['businessId'];
 
     if (cancelToken) {
       cancelToken.cancel();
@@ -84,7 +84,7 @@ let cancelToken = axios.CancelToken.source();
           dispatch(
             CommonActions.setAlert({
               visible: true,
-              content: error?.response?.message,
+              content:  error.response.message,
             })
           );
           dispatch(ServicesRedux.serviceSearchLoading(false));
@@ -114,7 +114,7 @@ let cancelToken = axios.CancelToken.source();
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error?.response?.message,
+          content: error.response.message,
         })
       );
       dispatch(CommonActions.setLoading(false));
@@ -137,7 +137,7 @@ let cancelToken = axios.CancelToken.source();
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error?.response?.message,
+          content:  error.response.message,
         })
       );
       dispatch(CommonActions.setLoading(false));

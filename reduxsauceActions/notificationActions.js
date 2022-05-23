@@ -8,7 +8,7 @@ const limitPage = 10;
   const { config } = getState();
   dispatch(CommonActions.setLoading(true));
   await axios
-    .get("/notification/list/" + config?.businessId)
+    .get("/notification/list/" + config['businessId'])
     .then((response) => {
       dispatch(NotificationActions.setNotification(response.data));
       dispatch(CommonActions.setLoading(false));
@@ -18,10 +18,10 @@ const limitPage = 10;
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error?.response?.message,
+          content: error.response.message,
         })
       );
-      console.log("error >> ", error?.response?.message);
+      console.log("error >> ", error.response.message);
     });
 };
 
@@ -42,10 +42,10 @@ const limitPage = 10;
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error?.response?.message,
+          content: error.response.message,
         })
       );
-      console.log("error >> ", error?.response);
+      console.log("error >> ", error.response);
     });
 };
  const updateNotificationInList =
@@ -66,10 +66,10 @@ const limitPage = 10;
         dispatch(
           CommonActions.setAlert({
             visible: true,
-            content: error?.response?.message,
+            content:  error.response.message,
           })
         );
-        console.log("error >> ", error?.response);
+        console.log("error >> ",  error.response.message);
       });
   };
 
@@ -121,10 +121,10 @@ const limitPage = 10;
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error?.response?.message,
+          content:  error.response.message,
         })
       );
-      console.log("error >> ", error?.response?.message);
+      console.log("error >> ",  error.response.message);
     });
   // const {
   //   auth: { user },
@@ -160,10 +160,10 @@ const limitPage = 10;
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error?.response?.message,
+          content:  error.response.message,
         })
       );
-      console.log("error", error?.response?.message);
+      console.log("error",  error.response.message);
     });
   // const {
   //   auth: {user},

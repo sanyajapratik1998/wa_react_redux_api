@@ -1,11 +1,12 @@
-const { PersistGate } = require('redux-persist/integration/react')
-const AsyncStorage = require('@react-native-async-storage/async-storage').default
-const { applyMiddleware, createStore } = require('redux')
-const  { persistReducer, persistStore } = require('redux-persist')
-const thunk = require('redux-thunk').default
-const logger = require('redux-logger').default
-const axios = require('axios')
-const {rootReducer} = require('./reduxsauce')
+const { PersistGate } = require("redux-persist/integration/react");
+const AsyncStorage =
+  require("@react-native-async-storage/async-storage").default;
+const { applyMiddleware, createStore } = require("redux");
+const { persistReducer, persistStore } = require("redux-persist");
+const thunk = require("redux-thunk").default;
+const logger = require("redux-logger").default;
+const axios = require("axios");
+const { rootReducer } = require("./reduxsauce");
 
 // import Constants from 'expo-constants';
 
@@ -38,7 +39,7 @@ const setDefaultBaseURL = initializeAxiosData;
 const getErrorMessage = (data) => {
   // check for data is object
 
-  if (data?.message && data?.message != undefined) {
+  if (data["message"] && data["message"] != undefined) {
     return data.message;
   }
 
@@ -104,7 +105,7 @@ axios.interceptors.response.use(
 
 const persistor = persistStore(store, {}, () => {
   const { user } = store.getState().auth;
-  if (user?.token) {
+  if (user["token"] || data["token"] != undefined) {
     axios.defaults.headers.common["Authorization"] = `Token ${user.token}`;
   } else {
     axios.defaults.headers.common["Authorization"] = "";
@@ -112,4 +113,10 @@ const persistor = persistStore(store, {}, () => {
   }
 });
 
-module.exports = {  PersistGate, store, persistor, initializeAxiosData, setDefaultBaseURL };
+module.exports = {
+  PersistGate,
+  store,
+  persistor,
+  initializeAxiosData,
+  setDefaultBaseURL,
+};

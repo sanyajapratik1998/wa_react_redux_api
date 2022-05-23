@@ -24,7 +24,7 @@ const AuthActions = require('../reduxsauce/authRedux')
     dispatch(
       AuthActions.setUser({
         ...user,
-        photo: `${response.data?.photo}`,
+        photo: `${response.data.photo}`,
       })
     );
     dispatch(
@@ -33,7 +33,7 @@ const AuthActions = require('../reduxsauce/authRedux')
         content: "Change profile picture successfully",
       })
     );
-    return response?.data?.photo;
+    return response.data['photo'];
   } catch ({ message }) {
     dispatch(CommonActions.setAlert({ visible: true, content: message }));
   }

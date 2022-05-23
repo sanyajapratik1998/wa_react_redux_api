@@ -8,7 +8,7 @@ const ProductActions = require('../reduxsauce/productRedux')
   try {
     console.log('--categories----');
     const response = await axios
-      .get('/products/product-category/list/' + config.businessId)
+      .get('/products/product-category/list/' + config['businessId'])
       .then((response) => response.data);
     console.log('checking response : ', response);
     if (response.error) {
@@ -23,12 +23,12 @@ const ProductActions = require('../reduxsauce/productRedux')
       );
     }
   } catch (error) {
-    console.log('message', error?.response?.message);
+    console.log('message',  error.response.message);
 
     dispatch(
       CommonActions.setAlert({
         visible: true,
-        content: error?.response?.message,
+        content:  error.response.message,
       }),
     );
   }
@@ -52,16 +52,16 @@ let cancelToken = axios.CancelToken.source();
     let url =
       search && category
         ? '/products/list/' +
-          config.businessId +
+          config['businessId'] +
           '?search=' +
           search +
           '&category=' +
           category
         : category
-        ? '/products/list/' + config.businessId + '?category=' + category
+        ? '/products/list/' + config['businessId'] + '?category=' + category
         : search
-        ? '/products/list/' + config.businessId + '?search=' + search
-        : '/products/list/' + config.businessId;
+        ? '/products/list/' + config['businessId'] + '?search=' + search
+        : '/products/list/' + config['businessId'];
 
     if (cancelToken) {
       cancelToken.cancel();

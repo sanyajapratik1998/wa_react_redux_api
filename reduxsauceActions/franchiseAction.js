@@ -25,7 +25,7 @@ const FranchiseAction = require('../reduxsauce/franchiseRedux')
         dispatch(
           CommonActions.setAlert({
             visible: true,
-            content: error?.response?.message || 'Something went wrong!',
+            content:  error.response.message || 'Something went wrong!',
           }),
         );
       });
@@ -37,7 +37,7 @@ const FranchiseAction = require('../reduxsauce/franchiseRedux')
   console.log('calling-->');
   dispatch(CommonActions.setLoading(true));
   axios
-    .get('/business/franchise/list/' + config?.businessId)
+    .get('/business/franchise/list/' + config['businessId'])
     .then((response) => {
       console.log('response franchies list', response.data);
       dispatch(FranchiseAction.setFranchise(response.data));
@@ -49,7 +49,7 @@ const FranchiseAction = require('../reduxsauce/franchiseRedux')
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error?.response?.message || 'Something went wrong!',
+          content: error.response.message || 'Something went wrong!',
         }),
       );
     });
@@ -79,7 +79,7 @@ const FranchiseAction = require('../reduxsauce/franchiseRedux')
         dispatch(
           CommonActions.setAlert({
             visible: true,
-            content: error?.response?.message || 'Something went wrong!',
+            content:  error.response.message || 'Something went wrong!',
           }),
         );
       });
@@ -107,7 +107,7 @@ const FranchiseAction = require('../reduxsauce/franchiseRedux')
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error?.response?.message || 'Something went wrong!',
+          content:  error.response.message || 'Something went wrong!',
         }),
       );
     });

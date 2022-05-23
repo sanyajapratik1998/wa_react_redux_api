@@ -4,12 +4,12 @@ const MenuRedux = require('../reduxsauce/menuRedux')
 const moment = require('moment')
 
  const isDateValid = (date) =>
-  date?.split('-')[0] &&
-  date?.split('-')[1] &&
-  date?.split('-')[2] &&
-  date?.split('-')[0].length >= 4 &&
-  date?.split('-')[1].length >= 1 &&
-  date?.split('-')[2].length >= 1 &&
+  date.split('-')[0] &&
+  date.split('-')[1] &&
+  date.split('-')[2] &&
+  date.split('-')[0].length >= 4 &&
+  date.split('-')[1].length >= 1 &&
+  date.split('-')[2].length >= 1 &&
   moment(date, 'YYYY-M-D').isValid();
 
 
@@ -45,16 +45,16 @@ let cancelToken = axios.CancelToken.source();
     let url =
       search && isDateValid(available_at)
         ? '/products/list/' +
-          config.businessId +
+          config['businessId'] +
           '?search=' +
           search +
           '&available_at=' +
           available_at
         : available_at && available_at != "Show All"
-        ? '/products/list/' + config.businessId + '?available_at=' + available_at
+        ? '/products/list/' + config['businessId'] + '?available_at=' + available_at
         : search
-        ? '/products/list/' + config.businessId + '?search=' + search
-        : '/products/list/' + config.businessId;
+        ? '/products/list/' + config['businessId'] + '?search=' + search
+        : '/products/list/' + config['businessId'];
 
     if (cancelToken) {
       cancelToken.cancel();
@@ -80,7 +80,7 @@ let cancelToken = axios.CancelToken.source();
           dispatch(
             CommonActions.setAlert({
               visible: true,
-              content: error?.response?.message,
+              content: error.response.message,
             }),
           );
           dispatch(MenuRedux.menuSearchLoading(false));

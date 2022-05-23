@@ -8,7 +8,7 @@ const limitPage = 10;
   dispatch(CommonActions.setLoading(true));
   const { config } = getState();
   await axios
-    .get("/promotion/list/" + config?.businessId)
+    .get("/promotion/list/" + config['businessId'])
     .then((response) => {
       dispatch(CommonActions.setLoading(false));
       dispatch(PromotionActions.setPromotion(response.data));
@@ -45,10 +45,10 @@ const limitPage = 10;
         dispatch(
           CommonActions.setAlert({
             visible: true,
-            content: error?.response?.message,
+            content:  error.response.message,
           })
         );
-        console.log("error >> ", error?.response);
+        console.log("error >> ",  error.response.message);
       });
   };
  const updatePromotionInList =
@@ -70,7 +70,7 @@ const limitPage = 10;
         dispatch(
           CommonActions.setAlert({
             visible: true,
-            content: error?.response?.message,
+            content: error.response.message,
           })
         );
         console.log("error >> ", error);
@@ -93,10 +93,10 @@ const limitPage = 10;
         dispatch(
           CommonActions.setAlert({
             visible: true,
-            content: error?.response?.message,
+            content:  error.response.message,
           })
         );
-        console.log("error >> ", error?.response);
+        console.log("error >> ", error.response.message);
       });
   };
 

@@ -12,20 +12,20 @@ const createOrder = params => async (dispatch, getState) => {
         product: o.id,
         qty: parseInt(o.cart_qty),
         price: parseFloat(o.price),
-        selected_variants: o?.selectedVariants ? o.selectedVariants : null,
+        selected_variants: o.selectedVariants ? o.selectedVariants : null,
         final_price: o.final_price,
       }),
   );
   // console.log(cart.list);
   console.log({
-    business: config.businessId,
+    business: config['businessId'],
     products,
     type: params.type,
     ...params,
   });
   return await axios
     .post('/order/create', {
-      business: config.businessId,
+      business: config['businessId'],
       products,
       type: params.type,
       ...params,
