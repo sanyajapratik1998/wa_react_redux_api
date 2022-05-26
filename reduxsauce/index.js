@@ -11,6 +11,7 @@ const rootReducer = combineReducers({
   order: resettable(require('./orderRedux').reducer),
   products: resettable(require('./productRedux').reducer),
   recentProducts: resettable(require('./recentProductRedux').reducer),
+  favorite: resettable(require('./favoriteRedux').reducer),
   services: resettable(require('./servicesRedux').reducer),
   menu: resettable(require('./menuRedux').reducer),
   cart: resettable(require('./cartRedux').reducer),

@@ -105,8 +105,8 @@ axios.interceptors.response.use(
 
 const persistor = persistStore(store, {}, () => {
   const { user } = store.getState().auth;
-  if (user["token"] || data["token"] != undefined) {
-    axios.defaults.headers.common["Authorization"] = `Token ${user.token}`;
+  if (user && user["token"]) {
+    axios.defaults.headers.common["Authorization"] = `Token ${user['token']}`;
   } else {
     axios.defaults.headers.common["Authorization"] = "";
     delete axios.defaults.headers.common["Authorization"];
