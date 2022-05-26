@@ -160,10 +160,10 @@ const limitPage = 10;
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content:  error.response.message,
+          content:  error.response['message'],
         })
       );
-      console.log("error",  error.response.message);
+      console.log("error",  error.response['message']);
     });
   // const {
   //   auth: {user},

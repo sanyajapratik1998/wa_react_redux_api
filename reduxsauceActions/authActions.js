@@ -102,11 +102,11 @@ const emailPassWOrdLogin =
       // navigation.navigate('Home');
       // }
       .catch((e) => {
-        console.log("e.response ---<", e.response);
+        console.log("e.response ---<", e.response['message']);
         dispatch(
           CommonActions.setAlert({
             visible: true,
-            content: e.response.message,
+            content: e.response['message'],
           })
         );
         dispatch(CommonActions.setLoading(false));
@@ -141,7 +141,7 @@ const verifyOTP = (data, navigation) => async (dispatch, getState) => {
     dispatch(
       CommonActions.setAlert({
         visible: true,
-        content: error.response.message || "Invalid OTP try again.",
+        content: error.response["message"] || "Invalid OTP try again.",
       })
     );
     dispatch(CommonActions.setLoading(false));
@@ -204,7 +204,7 @@ const logout = (navigation, platform) => async (dispatch, getState) => {
       dispatch(CommonActions.setLoading(false));
       CommonActions.setAlert({
         visible: true,
-        content: error.response.message || "Something went wrong.",
+        content: error.response["message"] || "Something went wrong.",
       });
     });
 };

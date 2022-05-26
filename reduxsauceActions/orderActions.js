@@ -46,7 +46,7 @@ const createOrder = params => async (dispatch, getState) => {
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error.response.message,
+          content: error.response['message'],
         }),
       );
 
