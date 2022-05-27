@@ -31,6 +31,7 @@ const AuthActions = require('../reduxsauce/authRedux')
       CommonActions.setAlert({
         visible: true,
         content: "Change profile picture successfully",
+        type: "success",
       })
     );
     return response.data['photo'];
@@ -98,6 +99,7 @@ const AuthActions = require('../reduxsauce/authRedux')
         CommonActions.setAlert({
           visible: true,
           content: "Update profile successfully",
+          type: "success",
         })
       );
       callback('success')

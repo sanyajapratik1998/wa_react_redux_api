@@ -106,7 +106,7 @@ const emailPassWOrdLogin =
         dispatch(
           CommonActions.setAlert({
             visible: true,
-            content: e.response['message'],
+            content: e.response["message"],
           })
         );
         dispatch(CommonActions.setLoading(false));
@@ -185,14 +185,15 @@ const logout = (callback) => async (dispatch, getState) => {
       axios.defaults.headers.common["Authorization"] = "";
       delete axios.defaults.headers.common["Authorization"];
       dispatch(AuthActions.logout());
-       dispatch(
+      dispatch(
         CommonActions.setAlert({
           visible: true,
           content: "Logout successfully",
+          type: "success",
         })
       );
       dispatch(CommonActions.setLoading(false));
-      callback('success')
+      callback("success");
     })
     .catch((error) => {
       console.log("error->", error);
@@ -204,24 +205,33 @@ const logout = (callback) => async (dispatch, getState) => {
     });
 };
 
-const onForgotPassword = (username,callback) => async (dispatch,getState) => {
+const onForgotPassword = (username, callback) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   try {
-    const response = await axios
-    .post('/user/resend-verification-otp', {
+    const response = await axios.post("/user/resend-verification-otp", {
       username: username,
       business: getState().config["businessId"],
-    })
-    dispatch(CommonActions.setLoading(false))
+    });
+    dispatch(CommonActions.setLoading(false));
     console.log(response);
-    dispatch(CommonActions.setAlert({ visible: true, content: response['data']['message'] }));
-    callback("success",response) 
+    dispatch(
+      CommonActions.setAlert({
+        visible: true,
+        content: response["data"]["message"],
+        type: "success",
+      })
+    );
+    callback("success", response);
   } catch (error) {
     dispatch(CommonActions.setLoading(false));
-    dispatch(CommonActions.setAlert({ visible: true, content: error['response']['message'] }));
+    dispatch(
+      CommonActions.setAlert({
+        visible: true,
+        content: error["response"]["message"],
+      })
+    );
   }
 };
-
 
 const resendVerificationCode = (phone) => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));

@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     rightButton: '',
     leftButton: '',
     rightPress: null,
-    leftPress: null
+    leftPress: null,
+    type:''
   },
   alertFullScreen: {
     visible: false,
