@@ -102,7 +102,7 @@ const emailPassWOrdLogin =
       // navigation.navigate('Home');
       // }
       .catch((e) => {
-        console.log("e.response ---<", e.response['message']);
+        console.log("e.response ---<", e.response);
         dispatch(
           CommonActions.setAlert({
             visible: true,
@@ -175,9 +175,8 @@ const verifyCode = (data, navigation) => async (dispatch) => {
   dispatch(CommonActions.setLoading(false));
 };
 
-const logout = (navigation, platform) => async (dispatch, getState) => {
+const logout = (callback) => async (dispatch, getState) => {
   const { config } = getState;
-  console.log("platform-------->>>>>>", platform);
   dispatch(CommonActions.setLoading(true));
   await axios
     .get("/user/logout/")
@@ -185,19 +184,15 @@ const logout = (navigation, platform) => async (dispatch, getState) => {
       console.log("response", response);
       axios.defaults.headers.common["Authorization"] = "";
       delete axios.defaults.headers.common["Authorization"];
-      await dispatch(AuthActions.logout());
-      await dispatch(
+      dispatch(AuthActions.logout());
+       dispatch(
         CommonActions.setAlert({
           visible: true,
           content: "Logout successfully",
         })
       );
-      !config.theme.isLoginRequired &&
-        (platform == "web"
-          ? await window.location.replace("/")
-          : await navigation.goBack());
-
       dispatch(CommonActions.setLoading(false));
+      callback('success')
     })
     .catch((error) => {
       console.log("error->", error);
@@ -208,6 +203,25 @@ const logout = (navigation, platform) => async (dispatch, getState) => {
       });
     });
 };
+
+const onForgotPassword = (username,callback) => async (dispatch,getState) => {
+  dispatch(CommonActions.setLoading(true));
+  try {
+    const response = await axios
+    .post('/user/resend-verification-otp', {
+      username: username,
+      business: getState().config["businessId"],
+    })
+    dispatch(CommonActions.setLoading(false))
+    console.log(response);
+    dispatch(CommonActions.setAlert({ visible: true, content: response['data']['message'] }));
+    callback("success",response) 
+  } catch (error) {
+    dispatch(CommonActions.setLoading(false));
+    dispatch(CommonActions.setAlert({ visible: true, content: error['response']['message'] }));
+  }
+};
+
 
 const resendVerificationCode = (phone) => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));
@@ -298,6 +312,7 @@ const updateUserData = (data) => async (dispatch, getState) => {
 module.exports = {
   newRegisterAccount,
   emailPassWOrdLogin,
+  onForgotPassword,
   verifyOTP,
   verifyCode,
   logout,
