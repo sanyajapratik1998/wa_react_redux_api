@@ -69,7 +69,7 @@ const AuthActions = require('../reduxsauce/authRedux')
   dispatch(CommonActions.setLoading(false));
 };
 
- const editProfile = (body, navigation) => async (dispatch, getState) => {
+ const editProfile = (body, callback) => async (dispatch, getState) => {
   const {
     auth: { profile, user },
   } = getState();
@@ -100,7 +100,8 @@ const AuthActions = require('../reduxsauce/authRedux')
           content: "Update profile successfully",
         })
       );
-      navigation.goBack();
+      callback('success')
+      // navigation.goBack();
     }
   } catch ({ message }) {
     dispatch(CommonActions.setAlert({ visible: true, content: message }));
