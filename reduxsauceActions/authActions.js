@@ -21,11 +21,15 @@ const newRegisterAccount =
         .then((response) => response.data);
       console.log("new Registration :: ", response);
       if (!response.is_active) {
-        callback("verify-otp", { user: response });
+        if (callback) {
+          callback("verify-otp", { user: response });
+        }
         // navigation.navigate('verify-otp', {user: response});
       } else {
         dispatch(AuthActions.setUser(response));
-        callback("success");
+        if (callback) {
+          callback("success");
+        }
       }
     } catch (e) {
       console.log(e);
@@ -71,7 +75,9 @@ const emailPassWOrdLogin =
           dispatch(AuthActions.setUser(response.data));
           dispatch(CommonActions.setLoading(false));
           // here callback 2 perameter is navigate to direct access screen ex cart to login to go angain cart
-          callback("success", common.loginFrom);
+          if (callback) {
+            callback("success", common.loginFrom);
+          }
           dispatch(CommonActions.setLoginFrom(null));
 
           // if (common.loginFrom) {
@@ -85,13 +91,15 @@ const emailPassWOrdLogin =
           //     : navigation.replace('home'));
         } else {
           dispatch(CommonActions.setLoading(false));
-          callback("verify-otp", {
-            user: {
-              ...response.data,
-              email: username,
-              business: getState().config["businessId"],
-            },
-          });
+          if (callback) {
+            callback("verify-otp", {
+              user: {
+                ...response.data,
+                email: username,
+                business: getState().config["businessId"],
+              },
+            });
+          }
 
           // navigation.navigate('verify-otp', {
           //   user: {
@@ -136,8 +144,10 @@ const verifyOTP = (data, callback) => async (dispatch, getState) => {
     // }
 
     // here callback 2nd perametr is navigate to direct access page ex cart to login to go angain cart
-    callback("success",common.loginFrom);
-      dispatch(CommonActions.setLoginFrom(null));
+    if (callback) {
+      callback("success", common.loginFrom);
+    }
+    dispatch(CommonActions.setLoginFrom(null));
     // !config.theme.isLoginRequired &&
     //   (config.theme.showTabBar
     //     ? navigation.replace("app")
@@ -154,7 +164,7 @@ const verifyOTP = (data, callback) => async (dispatch, getState) => {
   }
 };
 
-const resendOTP =  (body, callback) => async (dispatch, getState) => {
+const resendOTP = (body, callback) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   await axios
     .post("/user/resend-verification-otp", body)
@@ -166,7 +176,9 @@ const resendOTP =  (body, callback) => async (dispatch, getState) => {
         })
       );
       dispatch(CommonActions.setLoading(false));
-      callback("success");
+      if (callback) {
+        callback("success");
+      }
     })
     .catch((error) => {
       dispatch(
@@ -224,7 +236,9 @@ const logout = (callback) => async (dispatch, getState) => {
         })
       );
       dispatch(CommonActions.setLoading(false));
-      callback("success");
+      if (callback) {
+        callback("success");
+      }
     })
     .catch((error) => {
       console.log("error->", error);
@@ -252,7 +266,9 @@ const onForgotPassword = (username, callback) => async (dispatch, getState) => {
         type: "success",
       })
     );
-    callback("success", response);
+    if (callback) {
+      callback("success", response);
+    }
   } catch (error) {
     dispatch(CommonActions.setLoading(false));
     dispatch(

@@ -68,14 +68,16 @@ const isOfferAvailable = (item,callback) => async (dispatch, getState) => {
         }),
       );
       dispatch(CommonActions.setLoading(false));
-      callback('success',{promoCode: item})
+      if (callback) {
+        callback('success',{promoCode: item})
+      }
     })
     .catch((error) => {
       console.log('error apply promotion->', error.response);
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error?.response?.data?.message,
+          content: error['response']['data']['message'],
         }),
       );
       dispatch(CommonActions.setLoading(false));
