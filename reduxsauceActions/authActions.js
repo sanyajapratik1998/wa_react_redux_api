@@ -70,7 +70,10 @@ const emailPassWOrdLogin =
         if (response.data.is_active) {
           dispatch(AuthActions.setUser(response.data));
           dispatch(CommonActions.setLoading(false));
-          callback("success");
+          // here callback 2 perameter is navigate to direct access screen ex cart to login to go angain cart
+          callback("success", common.loginFrom);
+          dispatch(CommonActions.setLoginFrom(null));
+
           // if (common.loginFrom) {
           //   navigation.replace(common.loginFrom);
           //   dispatch(CommonActions.setLoginFrom(null));
@@ -113,7 +116,7 @@ const emailPassWOrdLogin =
       });
   };
 
-const verifyOTP = (data, navigation) => async (dispatch, getState) => {
+const verifyOTP = (data, callback) => async (dispatch, getState) => {
   const { config, common } = getState();
   dispatch(CommonActions.setLoading(true));
   console.log("data", data);
@@ -126,16 +129,19 @@ const verifyOTP = (data, navigation) => async (dispatch, getState) => {
     console.log("response", response);
     dispatch(AuthActions.setUser(response.data));
     dispatch(CommonActions.setLoading(false));
-    if (common.loginFrom) {
-      navigation.replace(common.loginFrom);
-      dispatch(CommonActions.setLoginFrom(null));
-      return;
-    }
+    // if (common.loginFrom) {
+    //   dispatch(CommonActions.setLoginFrom(null));
+    //   navigation.replace(common.loginFrom);
+    //   return;
+    // }
 
-    !config.theme.isLoginRequired &&
-      (config.theme.showTabBar
-        ? navigation.replace("app")
-        : navigation.replace("home"));
+    // here callback 2nd perametr is navigate to direct access page ex cart to login to go angain cart
+    callback("success",common.loginFrom);
+      dispatch(CommonActions.setLoginFrom(null));
+    // !config.theme.isLoginRequired &&
+    //   (config.theme.showTabBar
+    //     ? navigation.replace("app")
+    //     : navigation.replace("home"));
   } catch (error) {
     console.log("error", error);
     dispatch(
@@ -146,6 +152,31 @@ const verifyOTP = (data, navigation) => async (dispatch, getState) => {
     );
     dispatch(CommonActions.setLoading(false));
   }
+};
+
+const resendOTP =  (body, callback) => async (dispatch, getState) => {
+  dispatch(CommonActions.setLoading(true));
+  await axios
+    .post("/user/resend-verification-otp", body)
+    .then((response) => {
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: response["data"]["message"],
+        })
+      );
+      dispatch(CommonActions.setLoading(false));
+      callback("success");
+    })
+    .catch((error) => {
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: error.response["message"] || "Invalid OTP try again.",
+        })
+      );
+      dispatch(CommonActions.setLoading(false));
+    });
 };
 
 const verifyCode = (data, navigation) => async (dispatch) => {
@@ -334,4 +365,5 @@ module.exports = {
   pickupLocationList,
   deletePickupLocation,
   updateUserData,
+  resendOTP,
 };
