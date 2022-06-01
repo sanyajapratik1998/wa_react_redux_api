@@ -53,4 +53,34 @@ const createOrder = params => async (dispatch, getState) => {
       return false;
     });
 };
-module.exports = {createOrder}
+
+const isOfferAvailable = (item,callback) => async (dispatch, getState) => {
+  dispatch(CommonActions.setLoading(true));
+  axios
+    .get('/promotion/availability/' + item['id'])
+    .then((response) => {
+      console.log('apply promotion', response);
+      // props.navigation.navigate('place-order', {promoCode: item});
+      dispatch(
+        CommonActions.setShowToast({
+          visible: true,
+          content: 'Applied successfully',
+        }),
+      );
+      dispatch(CommonActions.setLoading(false));
+      callback('success',{promoCode: item})
+    })
+    .catch((error) => {
+      console.log('error apply promotion->', error.response);
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: error?.response?.data?.message,
+        }),
+      );
+      dispatch(CommonActions.setLoading(false));
+    });
+};
+
+
+module.exports = {createOrder,isOfferAvailable}
