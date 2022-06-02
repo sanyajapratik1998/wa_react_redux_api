@@ -84,5 +84,175 @@ const isOfferAvailable = (item,callback) => async (dispatch, getState) => {
     });
 };
 
+const onProceedToPay =
+  (body, callback,cashOnDelivery, theme = null, platform = "web") =>
+  async (dispatch, getState) => {
+    const appConfig = getState().config;
+    const user = getState().auth["user"];
 
-module.exports = {createOrder,isOfferAvailable}
+    try {
+      dispatch(CommonActions.setLoading(true));
+      let order = await dispatch(createOrder(body));
+      if (order) {
+        if (cashOnDelivery) {
+          dispatch(CommonActions.setLoading(false));
+          callback &&
+            callback("success", "order-history-detail", {
+              id: order['id'],
+            });
+          dispatch(CartActions.emptyCart());
+          return;
+        } else {
+          if (appConfig["paymentType"].toLowerCase() == "cashfree") {
+            console.log("calling to cashfree");
+            dispatch(CommonActions.setLoading(false));
+            if (platform == "web") {
+              let left = window.innerWidth / 2 - 850 / 2;
+              let top = window.innerHeight / 2 - 500 / 2;
+              var new_window = window.open(
+                order.cashfree_payment_url,
+                "Ratting",
+                "width=850,height=500,toolbar=0,status=0,left=" +
+                  left +
+                  ", top=" +
+                  top
+              );
+
+              var timer = setInterval(checkChild, 500);
+
+              function checkChild() {
+                if (new_window.closed) {
+                  callback &&
+                    callback("success", "order-history-detail/" + order.id);
+                  clearInterval(timer);
+                }
+              }
+            } else {
+              callback &&
+                callback("success", "cashfree-payment", {
+                  url: order["cashfree_payment_url"],
+                  id: order["id"],
+                });
+            }
+            dispatch(CartActions.emptyCart());
+            return;
+          } else if (appConfig["paymentType"].toLowerCase() == "stripe") {
+            console.log("---------------------stripe");
+            const paymentStatus = await context.sendPaymentByStripe(
+              order,
+              this.props.navigation
+            );
+            console.log("paymentStatus", paymentStatus);
+            // get response after payemnt done in Boolean
+            if (paymentStatus) {
+              dispatch(CartActions.emptyCart());
+              callback &&
+                callback("success", "order-history-detail", {
+                  id: order["id"],
+                });
+            } else {
+              dispatch(CommonActions.setLoading(true));
+              // this.setState({ rePayment: true });
+              // Re pay
+              //  neeed to repay order if cancel by user
+            }
+          } else if (appConfig["paymentType"].toLowerCase() == "razorpay") {
+            dispatch(CartActions.emptyCart());
+            console.log("calling to razorpay");
+            if (platform == "web") {
+              const options = {
+                key: appConfig["paymentKey"],
+                currency: "INR",
+                amount: order["total"] * 100,
+                name: appConfig["businessName"],
+                description: appConfig["businessDescription"],
+                image: appConfig["logo"],
+                order_id: order["payment_order_key"],
+                modal: {
+                  ondismiss: () => {
+                    callback &&
+                      callback("success", "order-history-detail", {
+                        id: order["id"],
+                      });
+                  },
+                },
+                handler: (response) => {
+                  // alert(response.razorpay_payment_id);
+                  // alert(response.razorpay_order_id);
+                  // alert(response.razorpay_signature);
+                  axios
+                    .post("/order/pay/razorpay/success/" + order.id, {
+                      razorpay_payment_id: response["razorpay_payment_id"],
+                      razorpay_order_id: response["razorpay_order_id"],
+                      razorpay_signature: response["razorpay_signature"],
+                      order_id: order["id"],
+                    })
+                    .then((res) => {
+                      console.log("response- razorpay ->", res);
+                      dispatch(CommonActions.setLoading(false));
+                      callback &&
+                        callback("success", "order-history-detail", {
+                          id: order["id"],
+                        });
+                    })
+                    .catch((error) => {
+                      dispatch(CommonActions.setLoading(false));
+                      console.log("error- razorpay-> ", error["response"]);
+                      dispatch(
+                        CommonActions.setAlert({
+                          visible: true,
+                          content:
+                            "Something went wrong. Your order is not updated.",
+                        })
+                      );
+                    });
+                },
+                prefill: {
+                  name: user["first_name"] + " " + user["last_name"],
+                  email: user["email"],
+                  contact: user["phone"],
+                },
+                theme: theme 
+                // {
+                //   color: Colors.theme_color,
+                // },
+              };
+
+              const paymentObject = new window.Razorpay(options);
+              paymentObject.open();
+              return;
+            } else {
+              // if (this.state.cashOnDelivery) {
+              //   this.setState({loading: false});
+              //   this.props.navigation.replace('order-history-detail', {
+              //     id: order['id'],
+              //   });
+              // } else {
+              dispatch(CommonActions.setLoading(false));
+              callback && callback("success", "payment", { id: order["id"] });
+            }
+            dispatch(CartActions.emptyCart());
+            return;
+            // }
+          }
+        }
+      } else {
+        // stop pay loading
+        dispatch(CommonActions.setLoading(false));
+        //  order is not created from backend
+        return;
+      }
+    } catch (error) {
+      dispatch(CommonActions.setLoading(false));
+      console.log("error", error);
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: error["response"]["message"],
+        })
+      );
+    }
+  };
+
+
+module.exports = {createOrder,isOfferAvailable,onProceedToPay}
