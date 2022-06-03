@@ -259,12 +259,13 @@ const fetchOrderDetail = (orderId, callback) => async (dispatch, getState) => {
 
   await axios
     .get(`/order/detail/${orderId}`)
-    .then((response) => {
+    .then(async (response) => {
       console.log("order Detail->", response["data"]["data"]);
       if (callback) {
-        callback("success", response["data"]["data"]);
-      }
-      dispatch(CommonActions.setLoading(false));
+        await callback("success", response["data"]["data"], async () => dispatch(CommonActions.setLoading(false)));
+    }else{
+      dispatch(CommonActions.setLoading(false))
+    }
     })
     .catch((error) => {
       console.log("error", error);
@@ -278,7 +279,7 @@ const fetchOrderDetail = (orderId, callback) => async (dispatch, getState) => {
     });
 };
 const fetchOrderStatusHistoryList =
-  (orderId, callback, loading = false) =>
+  (orderId, callback, loading = true) =>
   async (dispatch, getState) => {
     dispatch(CommonActions.setLoading(loading));
     try {
@@ -438,12 +439,12 @@ const onPayNow =
                 callback("success", null, res);
               })
               .catch((error) => {
-                console.log("error- razorpay-> ", error?.response);
+                console.log("error- razorpay-> ", error['response']);
                 alert("Something went wrong. Your order is not updated.");
               });
           },
           prefill: {
-            name: user["first_name"] + " " + user?.last_name,
+            name: user["first_name"] + " " + user['last_name'],
             email: user["email"],
             contact: user["phone"],
           },
