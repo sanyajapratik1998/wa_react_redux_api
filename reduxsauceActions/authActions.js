@@ -300,7 +300,54 @@ const resendVerificationCode = (phone) => async (dispatch) => {
 
 const createPickupLocation = (data) => async (dispatch, getState) => {};
 
-const updateAddress = () => async (dispatch, getState) => {};
+const onUpdateAddress = (id, body, callback) => async (dispatch, getState) => {
+  await axios
+    .put("/user/address/update/" + id, body)
+    .then((res) => {
+      console.log("res ===================>", res);
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: "Address updated successfully",
+        })
+      );
+      dispatch(addressList());
+      callback("success");
+    })
+    .catch((error) => {
+      console.log("err ============================>", error.response);
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: error["response"]["message"],
+        })
+      );
+    });
+};
+const onCreateAddress = (body, callback) => async (dispatch, getState) => {
+  await axios
+    .post("/user/address/create", body)
+    .then((res) => {
+      console.log("res ===================>", res);
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: "Address added successfully",
+        })
+      );
+      dispatch(addressList({ from: "place-order" }));
+      callback("success");
+    })
+    .catch((error) => {
+      console.log("err ============================>", error);
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: error["response"]["message"],
+        })
+      );
+    });
+};
 
 const addressList = () => async (dispatch) => {
   dispatch(CommonActions.setLoading(true));
@@ -375,11 +422,12 @@ module.exports = {
   logout,
   resendVerificationCode,
   createPickupLocation,
-  updateAddress,
+  onCreateAddress,
   addressList,
   deleteAddress,
   pickupLocationList,
   deletePickupLocation,
   updateUserData,
+  onUpdateAddress,
   resendOTP,
 };
