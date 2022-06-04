@@ -110,4 +110,51 @@ const getProducts =
       dispatch(CommonActions.setLoading(false));
     }
   };
-module.exports = { getCategories, getProducts };
+const fetchSubCategory = (id, callback) => async (dispatch, getState) => {
+  const { config } = getState();
+  dispatch(CommonActions.setLoading(true));
+  try {
+    const response = await axios.get(
+      `/products/product-sub-category/list/${config["businessId"]}/${id}`
+    );
+    console.log("response", response);
+    dispatch(CommonActions.setLoading(false));
+    callback && callback("success", response["data"]);
+  } catch (error) {
+    console.log("error", error["response"]);
+    dispatch(CommonActions.setLoading(false));
+    dispatch(
+      CommonActions.setAlert({
+        visible: true,
+        content: error["response"]["message"],
+      })
+    );
+  }
+};
+const getProductDetail = (id, callback) => async (dispatch, getState) => {
+  dispatch(CommonActions.setLoading(true));
+  await axios
+    .get("/products/details/" + id)
+    .then((response) => {
+      console.log("detail response", response);
+      dispatch(CommonActions.setLoading(false));
+      callback && callback("success", response["data"]);
+    })
+    .catch((error) => {
+      dispatch(CommonActions.setLoading(false));
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: error["response"]["message"],
+        })
+      );
+      console.log("error->", error["response"]);
+    });
+};
+
+module.exports = {
+  getCategories,
+  getProducts,
+  fetchSubCategory,
+  getProductDetail,
+};
