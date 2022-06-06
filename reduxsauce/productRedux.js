@@ -31,7 +31,7 @@ const getProducts = (state, {data}) => ({
 
 const getProductsV1 = (state, {data}) => ({
   ...state,
-  productsV1: data.products,
+  productsV1: data.productsV1,
 });
 
 const productSearchLoading = (state, {productSearchLoading}) => ({
