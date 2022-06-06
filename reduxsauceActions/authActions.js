@@ -413,6 +413,54 @@ const updateUserData = (data) => async (dispatch, getState) => {
   dispatch(AuthActions.setUser({ ...auth.user, setting: data }));
 };
 
+const onResendOtp = (username, callback) => async (dispatch, getState) => {
+  const appConfig = getState().config;
+  dispatch(CommonActions.setLoading(true));
+  await axios
+    .post("/user/resend-verification-otp", {
+      username: username,
+      business: appConfig["businessId"],
+    })
+    .then((response) => {
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: response["data"]["message"],
+        })
+      );
+      dispatch(CommonActions.setLoading(false));
+      callback && callback("success", response["data"]["message"]);
+    })
+    .catch((error) => {
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: error["response"]["message"],
+        })
+      );
+      dispatch(CommonActions.setLoading(false));
+    });
+};
+
+const onResetPassword = (body, callback) => async (dispatch, getState) => {
+  dispatch(CommonActions.setLoading(true));
+  await axios
+    .post("/user/reset-password/", body)
+    .then((response) => {
+      dispatch(CommonActions.setLoading(false));
+      callback("success", response);
+    })
+    .catch((error) => {
+      console.log("error->", error?.response);
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: error["response"]["message"],
+        })
+      );
+      dispatch(CommonActions.setLoading(false));
+    });
+};
 module.exports = {
   newRegisterAccount,
   emailPassWOrdLogin,
@@ -430,4 +478,6 @@ module.exports = {
   updateUserData,
   onUpdateAddress,
   resendOTP,
+  onResendOtp,
+  onResetPassword,
 };
