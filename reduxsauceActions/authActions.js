@@ -36,14 +36,13 @@ const newRegisterAccount =
       // console.log(typeof e.response.data == 'object');
       // console.log(e.response.data[Object.keys(e.response.data)[0]]);
 
-      e["response"] ||
-        (e["response"] != undefined &&
-          dispatch(
-            CommonActions.setAlert({
-              visible: true,
-              content: e.response.message,
-            })
-          ));
+      e["response"] != undefined &&
+        dispatch(
+          CommonActions.setAlert({
+            visible: true,
+            content: e.response.message,
+          })
+        );
     }
 
     dispatch(CommonActions.setLoading(false));
