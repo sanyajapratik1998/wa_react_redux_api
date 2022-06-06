@@ -262,10 +262,12 @@ const fetchOrderDetail = (orderId, callback) => async (dispatch, getState) => {
     .then(async (response) => {
       console.log("order Detail->", response["data"]["data"]);
       if (callback) {
-        await callback("success", response["data"]["data"], async () => dispatch(CommonActions.setLoading(false)));
-    }else{
-      dispatch(CommonActions.setLoading(false))
-    }
+        await callback("success", response["data"]["data"], async () =>
+          dispatch(CommonActions.setLoading(false))
+        );
+      } else {
+        dispatch(CommonActions.setLoading(false));
+      }
     })
     .catch((error) => {
       console.log("error", error);
@@ -285,10 +287,10 @@ const fetchOrderStatusHistoryList =
     try {
       const response = await axios.get(`/order/status/history/list/${orderId}`);
       console.log("response order history", response);
+      dispatch(CommonActions.setLoading(false));
       if (callback) {
         callback("success", response["data"]);
       }
-      dispatch(CommonActions.setLoading(false));
     } catch (error) {
       console.log("error", error);
       dispatch(CommonActions.setLoading(false));
@@ -408,7 +410,7 @@ const onPayNow =
         }
       } else {
         let baseurl =
-          config['ENV'] == "local" || config['ENV'] == "development"
+          config["ENV"] == "local" || config["ENV"] == "development"
             ? "https://payments-test.cashfree.com/order/#"
             : "https://payments.cashfree.com/order/#";
         callback("success", "cashfree-payment", {
@@ -439,12 +441,12 @@ const onPayNow =
                 callback("success", null, res);
               })
               .catch((error) => {
-                console.log("error- razorpay-> ", error['response']);
+                console.log("error- razorpay-> ", error["response"]);
                 alert("Something went wrong. Your order is not updated.");
               });
           },
           prefill: {
-            name: user["first_name"] + " " + user['last_name'],
+            name: user["first_name"] + " " + user["last_name"],
             email: user["email"],
             contact: user["phone"],
           },

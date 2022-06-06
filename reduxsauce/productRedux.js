@@ -12,6 +12,7 @@ const INITIAL_STATE = {
 const {Types, Creators} = createActions({
   getCategories: ['data'],
   getProducts: ['data'],
+  getProductsV1: ['data'],
   productSearchLoading: ['productSearchLoading'],
 });
 
@@ -43,7 +44,7 @@ const productSearchLoading = (state, {productSearchLoading}) => ({
  const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_CATEGORIES]: getCategories,
   [Types.GET_PRODUCTS]: getProducts,
-  [Types.GET_PRODUCTSV1]: getProductsV1,
+  [Types.GET_PRODUCTS_V1]: getProductsV1,
   [Types.PRODUCT_SEARCH_LOADING]: productSearchLoading,
 });
 
