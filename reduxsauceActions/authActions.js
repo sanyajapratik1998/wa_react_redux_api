@@ -35,7 +35,6 @@ const newRegisterAccount =
       console.log(e);
       // console.log(typeof e.response.data == 'object');
       // console.log(e.response.data[Object.keys(e.response.data)[0]]);
-
       e["response"] != undefined &&
         dispatch(
           CommonActions.setAlert({
@@ -222,7 +221,7 @@ const logout = (callback) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   await axios
     .get("/user/logout/")
-    .then(async (response) => {
+    .then((response) => {
       console.log("response", response);
       axios.defaults.headers.common["Authorization"] = "";
       delete axios.defaults.headers.common["Authorization"];
@@ -412,35 +411,6 @@ const updateUserData = (data) => async (dispatch, getState) => {
   dispatch(AuthActions.setUser({ ...auth.user, setting: data }));
 };
 
-const onResendOtp = (username, callback) => async (dispatch, getState) => {
-  const appConfig = getState().config;
-  dispatch(CommonActions.setLoading(true));
-  await axios
-    .post("/user/resend-verification-otp", {
-      username: username,
-      business: appConfig["businessId"],
-    })
-    .then((response) => {
-      dispatch(
-        CommonActions.setAlert({
-          visible: true,
-          content: response["data"]["message"],
-        })
-      );
-      dispatch(CommonActions.setLoading(false));
-      callback && callback("success", response["data"]["message"]);
-    })
-    .catch((error) => {
-      dispatch(
-        CommonActions.setAlert({
-          visible: true,
-          content: error["response"]["message"],
-        })
-      );
-      dispatch(CommonActions.setLoading(false));
-    });
-};
-
 const onResetPassword = (body, callback) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   await axios
@@ -477,6 +447,5 @@ module.exports = {
   updateUserData,
   onUpdateAddress,
   resendOTP,
-  onResendOtp,
   onResetPassword,
 };
