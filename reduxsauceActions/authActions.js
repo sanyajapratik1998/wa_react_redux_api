@@ -430,6 +430,20 @@ const onResetPassword = (body, callback) => async (dispatch, getState) => {
       dispatch(CommonActions.setLoading(false));
     });
 };
+
+const onUpdateFCMToken = (token) => (dispatch,getState) => {
+  const {user} = getState().auth
+  axios
+            .put('/user/update/profile/' + user['id'], {
+              fcm_token: token,
+            })
+            .then((response) => {
+              console.log('response update profile', response['data']);
+            })
+            .catch((error) => {
+              console.log('error to set fcm_token', error);
+            });
+}
 module.exports = {
   newRegisterAccount,
   emailPassWOrdLogin,
@@ -448,4 +462,5 @@ module.exports = {
   onUpdateAddress,
   resendOTP,
   onResetPassword,
+  onUpdateFCMToken
 };
