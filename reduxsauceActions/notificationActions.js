@@ -10,7 +10,7 @@ const limitPage = 10;
   await axios
     .get("/notification/list/" + config['businessId'])
     .then((response) => {
-      dispatch(NotificationActions.setNotification(response.data));
+      dispatch(NotificationActions.setNotification(response['data']));
       dispatch(CommonActions.setLoading(false));
     })
     .catch((error) => {
@@ -18,10 +18,10 @@ const limitPage = 10;
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error.response.message,
+          content: error['response']['message'],
         })
       );
-      console.log("error >> ", error.response.message);
+      console.log("error >> ", error['response']['message']);
     });
 };
 
@@ -34,7 +34,7 @@ const limitPage = 10;
       },
     })
     .then((response) => {
-      dispatch(NotificationActions.addNotificationInList(response.data));
+      dispatch(NotificationActions.addNotificationInList(response['data']));
       dispatch(CommonActions.setLoading(false));
     })
     .catch((error) => {
@@ -42,10 +42,10 @@ const limitPage = 10;
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content: error.response.message,
+          content: error['response']['message'],
         })
       );
-      console.log("error >> ", error.response);
+      console.log("error >> ", error['response']);
     });
 };
  const updateNotificationInList =
@@ -58,7 +58,7 @@ const limitPage = 10;
         },
       })
       .then((response) => {
-        dispatch(NotificationActions.updateNotificationInList(response.data));
+        dispatch(NotificationActions.updateNotificationInList(response['data']));
         dispatch(CommonActions.setLoading(false));
       })
       .catch((error) => {
@@ -66,10 +66,10 @@ const limitPage = 10;
         dispatch(
           CommonActions.setAlert({
             visible: true,
-            content:  error.response.message,
+            content:  error['response']['message'],
           })
         );
-        console.log("error >> ",  error.response.message);
+        console.log("error >> ",  error['response']['message']);
       });
   };
 
@@ -121,10 +121,10 @@ const limitPage = 10;
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content:  error.response.message,
+          content:  error['response']['message'],
         })
       );
-      console.log("error >> ",  error.response.message);
+      console.log("error >> ",  error['response']['message']);
     });
   // const {
   //   auth: { user },
@@ -160,10 +160,10 @@ const limitPage = 10;
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content:  error.response['message'],
+          content:  error['response']['message'],
         })
       );
-      console.log("error",  error.response['message']);
+      console.log("error",  error['response']['message']);
     });
   // const {
   //   auth: {user},

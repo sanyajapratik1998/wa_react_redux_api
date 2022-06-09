@@ -1,6 +1,7 @@
 const axios = require("axios");
 const CommonActions = require("../reduxsauce/commonRedux");
 const OrderActions = require("../reduxsauce/orderRedux");
+const CartActions = require("../reduxsauce/cartRedux");
 
 const createOrder = (params) => async (dispatch, getState) => {
   console.log("params", params);
