@@ -420,7 +420,7 @@ const onResetPassword = (body, callback) => async (dispatch, getState) => {
       callback("success", response);
     })
     .catch((error) => {
-      console.log("error->", error?.response);
+      console.log("error->", error['response']);
       dispatch(
         CommonActions.setAlert({
           visible: true,

@@ -3,7 +3,6 @@ const {createActions, createReducer} = require('reduxsauce')
 const INITIAL_STATE = {
   categories: [],
   products: [],
-  productsV1:null,
   productSearchLoading: false,
 };
 
@@ -12,7 +11,6 @@ const INITIAL_STATE = {
 const {Types, Creators} = createActions({
   getCategories: ['data'],
   getProducts: ['data'],
-  getProductsV1: ['data'],
   productSearchLoading: ['productSearchLoading'],
 });
 
@@ -29,10 +27,6 @@ const getProducts = (state, {data}) => ({
   products: data.products,
 });
 
-const getProductsV1 = (state, {data}) => ({
-  ...state,
-  productsV1: data.productsV1,
-});
 
 const productSearchLoading = (state, {productSearchLoading}) => ({
   ...state,
@@ -44,7 +38,6 @@ const productSearchLoading = (state, {productSearchLoading}) => ({
  const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_CATEGORIES]: getCategories,
   [Types.GET_PRODUCTS]: getProducts,
-  [Types.GET_PRODUCTS_V1]: getProductsV1,
   [Types.PRODUCT_SEARCH_LOADING]: productSearchLoading,
 });
 

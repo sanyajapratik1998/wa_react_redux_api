@@ -111,94 +111,100 @@ const getProducts =
     }
   };
 
-  let cancelToken1 = axios.CancelToken.source();
-  const getProductsV1 =
-    (item) =>
-    async (dispatch, getState) => {
-      const {
-        auth: { user },
-        order,
-        config,
-      } = getState();
-  
-      item.search || item.category || item.subCategory
-        ? dispatch(ProductActions.productSearchLoading(true))
-        : dispatch(CommonActions.setLoading(true));
-  
-      let url = "/products/list/" + config["businessId"];
-      if (item.limit) {
-        if (url.includes("?")) {
-          url += "&limit=" + item.limit;
-        } else {
-          url += "?limit=" + item.limit;
-        }
+let cancelToken1 = axios.CancelToken.source();
+const getProductsV1 =
+  (item, callback, loading = false) =>
+  async (dispatch, getState) => {
+    const {
+      auth: { user },
+      order,
+      config,
+      products,
+    } = getState();
+
+    item.search || item.category || item.subCategory
+      ? await dispatch(ProductActions.productSearchLoading(loading))
+      : await dispatch(CommonActions.setLoading(loading));
+
+    let url = "/products/list/" + config["businessId"];
+    if (item.limit) {
+      if (url.includes("?")) {
+        url += "&limit=" + item.limit;
+      } else {
+        url += "?limit=" + item.limit;
       }
-      if (item.offset) {
-        if (url.includes("?")) {
-          url += "&offset=" + item.offset;
-        } else {
-          url += "?offset=" + item.offset;
-        }
+    }
+    if (item.offset) {
+      if (url.includes("?")) {
+        url += "&offset=" + item.offset;
+      } else {
+        url += "?offset=" + item.offset;
       }
-      if (item.search) {
-        if (url.includes("?")) {
-          url += "&search=" + item.search;
-        } else {
-          url += "?search=" + item.search;
-        }
+    }
+    if (item.search) {
+      if (url.includes("?")) {
+        url += "&search=" + item.search;
+      } else {
+        url += "?search=" + item.search;
       }
-      if (item.category) {
-        if (url.includes("?")) {
-          url += "&category=" + item.category;
-        } else {
-          url += "?category=" + item.category;
-        }
+    }
+    if (item.category) {
+      if (url.includes("?")) {
+        url += "&category=" + item.category;
+      } else {
+        url += "?category=" + item.category;
       }
-      if (item.subCategory) {
-        if (url.includes("?")) {
-          url += "&sub_category=" + item.subCategory;
-        } else {
-          url += "?sub_category=" + item.subCategory;
-        }
+    }
+    if (item.subCategory) {
+      if (url.includes("?")) {
+        url += "&sub_category=" + item.subCategory;
+      } else {
+        url += "?sub_category=" + item.subCategory;
       }
-  
-      if (cancelToken) {
-        cancelToken.cancel();
-        cancelToken = axios.CancelToken.source();
-      }
-  
-      try {
-        axios
-          .get(url, { cancelToken: cancelToken1.token })
-          .then((response) => {
-            console.log("response======================", response);
-            dispatch(
-              ProductActions.getProductsV1({
-                fetching: false,
-                productsV1: response.data,
-              })
-            );
-            dispatch(ProductActions.productSearchLoading(false));
-            dispatch(CommonActions.setLoading(false));
-            return response.data;
-          })
-          .catch((error) => {
-            console.log("error", error);
-            // dispatch(
-            //   CommonActions.setAlert({
-            //     visible: true,
-            //     content: error?.response?.message,
-            //   }),
-            // );
-            dispatch(ProductActions.productSearchLoading(false));
-            dispatch(CommonActions.setLoading(false));
-          });
-      } catch ({ message }) {
-        dispatch(CommonActions.setAlert({ visible: true, content: message }));
-        dispatch(ProductActions.productSearchLoading(false));
-        dispatch(CommonActions.setLoading(false));
-      }
-    };  
+    }
+
+    if (cancelToken) {
+      cancelToken.cancel();
+      cancelToken = axios.CancelToken.source();
+    }
+
+    try {
+      await axios
+        .get(url, { cancelToken: cancelToken1.token })
+        .then(async (response) => {
+          console.log("response======================", response);
+          await dispatch(
+            ProductActions.getProducts({
+              fetching: false,
+              products:
+                item["offset"] == 0
+                  ? [...response["data"]["results"]]
+                  : [...products.products, ...response["data"]["results"]],
+            })
+          );
+
+          await dispatch(ProductActions.productSearchLoading(false));
+          await dispatch(CommonActions.setLoading(false));
+          callback && callback("success", response.data);
+          return response.data;
+        })
+        .catch(async (error) => {
+          console.log("error", error);
+          // dispatch(
+          //   CommonActions.setAlert({
+          //     visible: true,
+          //     content: error?.response?.message,
+          //   }),
+          // );
+          await dispatch(ProductActions.productSearchLoading(false));
+          await dispatch(CommonActions.setLoading(false));
+        });
+    } catch ({ message }) {
+      dispatch(CommonActions.setAlert({ visible: true, content: message }));
+      dispatch(ProductActions.productSearchLoading(false));
+      dispatch(CommonActions.setLoading(false));
+    }
+  };
 
 const fetchSubCategory = (id, callback) => async (dispatch, getState) => {
   const { config } = getState();
