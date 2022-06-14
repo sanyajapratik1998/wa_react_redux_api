@@ -162,6 +162,27 @@ const getProductsV1 =
         url += "?sub_category=" + item.subCategory;
       }
     }
+    if (item.maxPrice && item.maxPrice != '' ) {
+      if (url.includes("?")) {
+        url += "&max_price=" + item.maxPrice;
+      } else {
+        url += "?max_price=" + item.maxPrice;
+      }
+    }
+    if (item.minPrice && item.minPrice != '' ) {
+      if (url.includes("?")) {
+        url += "&min_price=" + item.minPrice;
+      } else {
+        url += "?min_price=" + item.minPrice;
+      }
+    }
+    if (item.sortBy && item.sortBy != '' ) {
+      if (url.includes("?")) {
+        url += "&sorted_by=" + item.sortBy;
+      } else {
+        url += "?sorted_by=" + item.sortBy;
+      }
+    }
 
     if (cancelToken) {
       cancelToken.cancel();
