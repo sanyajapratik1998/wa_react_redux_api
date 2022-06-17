@@ -2,38 +2,50 @@ const axios = require("axios");
 const CommonActions = require("../reduxsauce/commonRedux");
 const ProductActions = require("../reduxsauce/productRedux");
 
-const getCategories = () => async (dispatch, getState) => {
-  const { order, config } = getState();
-  dispatch(CommonActions.setLoading(true));
-  try {
-    console.log("--categories----");
-    const response = await axios
-      .get("/products/product-category/list/" + config["businessId"])
-      .then((response) => response.data);
-    console.log("checking response : ", response);
-    if (response.error) {
+const getCategories =
+  (search = "", loading = true, callback) =>
+  async (dispatch, getState) => {
+    const { order, config } = getState();
+    dispatch(CommonActions.setLoading(loading));
+    try {
+      let url = "/products/product-category/list/" + config["businessId"];
+
+      if (search && search != "") {
+        if (url.includes("?")) {
+          url += "&search=" + search;
+        } else {
+          url += "?search=" + search;
+        }
+      }
+
+      console.log("--categories----");
+      const response = await axios.get(url).then((response) => response.data);
+      console.log("checking response : ", response);
+      if (response.error) {
+        dispatch(
+          CommonActions.setAlert({ visible: true, content: response.error })
+        );
+        callback && callback("failed", response);
+      } else {
+        dispatch(
+          ProductActions.getCategories({
+            categories: response,
+          })
+        );
+        callback && callback("success", response);
+      }
+    } catch (error) {
+      console.log("message", error.response.message);
+
       dispatch(
-        CommonActions.setAlert({ visible: true, content: response.error })
-      );
-    } else {
-      dispatch(
-        ProductActions.getCategories({
-          categories: response,
+        CommonActions.setAlert({
+          visible: true,
+          content: error.response.message,
         })
       );
     }
-  } catch (error) {
-    console.log("message", error.response.message);
-
-    dispatch(
-      CommonActions.setAlert({
-        visible: true,
-        content: error.response.message,
-      })
-    );
-  }
-  dispatch(CommonActions.setLoading(false));
-};
+    dispatch(CommonActions.setLoading(false));
+  };
 
 let cancelToken = axios.CancelToken.source();
 const getProducts =
@@ -162,21 +174,21 @@ const getProductsV1 =
         url += "?sub_category=" + item.subCategory;
       }
     }
-    if (item.maxPrice && item.maxPrice != '' ) {
+    if (item.maxPrice && item.maxPrice != "") {
       if (url.includes("?")) {
         url += "&max_price=" + item.maxPrice;
       } else {
         url += "?max_price=" + item.maxPrice;
       }
     }
-    if (item.minPrice && item.minPrice != '' ) {
+    if (item.minPrice && item.minPrice != "") {
       if (url.includes("?")) {
         url += "&min_price=" + item.minPrice;
       } else {
         url += "?min_price=" + item.minPrice;
       }
     }
-    if (item.sortBy && item.sortBy != '' ) {
+    if (item.sortBy && item.sortBy != "") {
       if (url.includes("?")) {
         url += "&sorted_by=" + item.sortBy;
       } else {
