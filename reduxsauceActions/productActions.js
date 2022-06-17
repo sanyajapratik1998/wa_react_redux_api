@@ -282,10 +282,25 @@ const getProductDetail = (id, callback) => async (dispatch, getState) => {
     });
 };
 
+const fetchRecentProducts = (callback) => async (dispatch, getState) => {
+  const {config,recentProducts} = getState()
+  try {
+    const response = await axios.get(
+      `/products/list/${config['businessId']}?ids=` +
+        recentProducts.map((o) => o),
+    );
+    console.log('recent prdct response-->>', response);
+    callback && callback('success',response.data)
+  } catch (error) {
+    console.log('error', error);
+  }
+}
+
 module.exports = {
   getCategories,
   getProducts,
   getProductsV1,
   fetchSubCategory,
   getProductDetail,
+  fetchRecentProducts,
 };
