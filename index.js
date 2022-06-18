@@ -57,8 +57,23 @@ const getErrorMessage = (data) => {
   }
 };
 
+// call api using async function
+
+// (async () => {
+//   try {
+//     const response = await WACall("https://jsonplaceholder.typicode.com/posts",'POST',{title:"this is the title",body:"sfhjffbdfbjhdfjfjk jfbgkjjsdfkskdjfk  kjfdgndmbnsdnknkbnbnklngklcnblks kdngnsdklbjklvnkldnbdnbklsdmm,nkbvkngvkdfbkvsdklbknkklgv je"});
+//     console.log("repsonse--------------", response.data);
+//   } catch (error) {
+//     console.log("error---------",error);
+//   }
+// })();
+
 const WACall = (url, method="GET", body={}) =>{
-  return axios.post(url, body)
+  return axios({
+    method: method,
+    url: url,
+    body
+  })
 }
 
 axios.interceptors.response.use(
