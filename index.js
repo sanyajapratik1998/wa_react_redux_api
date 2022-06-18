@@ -68,13 +68,13 @@ const getErrorMessage = (data) => {
 //   }
 // })();
 
-const WACall = (url, method="GET", body={}) =>{
+const WACall = (url, method = "GET", body = {}) => {
   return axios({
     method: method,
     url: url,
-    body
-  })
-}
+    data: body,
+  });
+};
 
 axios.interceptors.response.use(
   function (response) {
@@ -125,7 +125,7 @@ axios.interceptors.response.use(
 const persistor = persistStore(store, {}, () => {
   const { user } = store.getState().auth;
   if (user && user["token"]) {
-    axios.defaults.headers.common["Authorization"] = `Token ${user['token']}`;
+    axios.defaults.headers.common["Authorization"] = `Token ${user["token"]}`;
   } else {
     axios.defaults.headers.common["Authorization"] = "";
     delete axios.defaults.headers.common["Authorization"];
@@ -138,5 +138,5 @@ module.exports = {
   persistor,
   initializeAxiosData,
   setDefaultBaseURL,
-  WACall
+  WACall,
 };
