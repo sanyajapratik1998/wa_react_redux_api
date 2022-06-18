@@ -57,6 +57,10 @@ const getErrorMessage = (data) => {
   }
 };
 
+const WACall = (url, method="GET", body={}) =>{
+  return axios.post(url, body)
+}
+
 axios.interceptors.response.use(
   function (response) {
     return response;
@@ -119,4 +123,5 @@ module.exports = {
   persistor,
   initializeAxiosData,
   setDefaultBaseURL,
+  WACall
 };
