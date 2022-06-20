@@ -68,11 +68,13 @@ const getErrorMessage = (data) => {
 //   }
 // })();
 
-const WACall = (url, method = "GET", body = {}) => {
+const WACall = (url, method = "GET", body = {}, headers, params) => {
   return axios({
     method: method,
     url: url,
     data: body,
+    headers: headers,
+    params,
   });
 };
 
