@@ -1,3 +1,4 @@
+const AuthActions = require("./reduxsauce/authRedux");
 const { PersistGate } = require("redux-persist/integration/react");
 const AsyncStorage =
   require("@react-native-async-storage/async-storage").default;
@@ -34,7 +35,7 @@ const initializeAxiosData = (url) => {
 };
 
 const setDefaultBaseURL = initializeAxiosData;
-// window.store = store;
+window.store = store;
 
 const getErrorMessage = (data) => {
   // check for data is object
@@ -86,7 +87,7 @@ axios.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       axios.defaults.headers.common["Authorization"] = "";
       delete axios.defaults.headers.common["Authorization"];
-      // window.store.dispatch(AuthActions.logout());
+      window.store.dispatch(AuthActions.logout());
       error = {
         ...error,
         response: { message: getErrorMessage(error.response.data) },
