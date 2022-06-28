@@ -1,46 +1,53 @@
-const axios = require('axios')
-const CommonActions = require('../reduxsauce/commonRedux')
-const AuthActions = require('../reduxsauce/authRedux')
+const axios = require("axios");
+const CommonActions = require("../reduxsauce/commonRedux");
+const AuthActions = require("../reduxsauce/authRedux");
 
- const uploadProfilePicture = (image) => async (dispatch, getState) => {
-  const {
-    auth: { profile, user },
-  } = getState();
-  try {
-    let body = new FormData();
+const uploadProfilePicture =
+  (image, isWeb = false) =>
+  async (dispatch, getState) => {
+    const {
+      auth: { profile, user },
+    } = getState();
+    try {
+      let body = new FormData();
 
-    body.append("fcm_token", user.fcm_token);
-    body.append("photo", {
-      uri: image.uri,
-      type: "image/jpeg",
-      name: "imageName.jpg",
-    });
+      user["fcm_token"] && body.append("fcm_token", user.fcm_token);
+      body.append(
+        "photo",
+        isWeb
+          ? image
+          : {
+              uri: image.uri,
+              type: "image/jpeg",
+              name: "imageName.jpg",
+            }
+      );
 
-    let response = await axios.put("/user/update/profile/" + user.id, body, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    dispatch(
-      AuthActions.setUser({
-        ...user,
-        photo: `${response.data.photo}`,
-      })
-    );
-    dispatch(
-      CommonActions.setAlert({
-        visible: true,
-        content: "Change profile picture successfully",
-        type: "success",
-      })
-    );
-    return response.data['photo'];
-  } catch ({ message }) {
-    dispatch(CommonActions.setAlert({ visible: true, content: message }));
-  }
-};
+      let response = await axios.put("/user/update/profile/" + user.id, body, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      dispatch(
+        AuthActions.setUser({
+          ...user,
+          photo: `${response.data.photo}`,
+        })
+      );
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: "Change profile picture successfully",
+          type: "success",
+        })
+      );
+      return response.data["photo"];
+    } catch ({ message }) {
+      dispatch(CommonActions.setAlert({ visible: true, content: message }));
+    }
+  };
 
- const removeProfilePicture = () => async (dispatch, getState) => {
+const removeProfilePicture = () => async (dispatch, getState) => {
   const {
     auth: { profile, user },
   } = getState();
@@ -70,7 +77,7 @@ const AuthActions = require('../reduxsauce/authRedux')
   dispatch(CommonActions.setLoading(false));
 };
 
- const editProfile = (body, callback) => async (dispatch, getState) => {
+const editProfile = (body, callback) => async (dispatch, getState) => {
   const {
     auth: { profile, user },
   } = getState();
@@ -102,7 +109,7 @@ const AuthActions = require('../reduxsauce/authRedux')
           type: "success",
         })
       );
-      callback('success')
+      callback("success");
       // navigation.goBack();
     }
   } catch ({ message }) {
@@ -110,4 +117,4 @@ const AuthActions = require('../reduxsauce/authRedux')
   }
   dispatch(CommonActions.setLoading(false));
 };
-module.exports ={uploadProfilePicture,removeProfilePicture,editProfile}
+module.exports = { uploadProfilePicture, removeProfilePicture, editProfile };
