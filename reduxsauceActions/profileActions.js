@@ -3,7 +3,7 @@ const CommonActions = require("../reduxsauce/commonRedux");
 const AuthActions = require("../reduxsauce/authRedux");
 
 const uploadProfilePicture =
-  (image, isWeb = false) =>
+  (image) =>
   async (dispatch, getState) => {
     const {
       auth: { profile, user },
@@ -12,16 +12,7 @@ const uploadProfilePicture =
       let body = new FormData();
 
       user["fcm_token"] && body.append("fcm_token", user.fcm_token);
-      body.append(
-        "photo",
-        isWeb
-          ? image
-          : {
-              uri: image.uri,
-              type: "image/jpeg",
-              name: "imageName.jpg",
-            }
-      );
+      body.append("photo", image);
 
       let response = await axios.put("/user/update/profile/" + user.id, body, {
         headers: {
