@@ -16,7 +16,7 @@ const persistConfig = {
   key: "root",
   storage: AsyncStorage,
   blacklist: ["common", "order", "cart"],
-  whitelist: ["auth", "config", "promotion", "recentProducts"],
+  whitelist: ["auth", "config", "promotion", "recentProducts", "activeOrderConfig"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -35,7 +35,7 @@ const initializeAxiosData = (url) => {
 };
 
 const setDefaultBaseURL = initializeAxiosData;
-window.store = store;
+// window.store = store;
 
 const getErrorMessage = (data) => {
   // check for data is object
@@ -87,7 +87,7 @@ axios.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       axios.defaults.headers.common["Authorization"] = "";
       delete axios.defaults.headers.common["Authorization"];
-      window.store.dispatch(AuthActions.logout());
+      store.dispatch(AuthActions.logout());
       error = {
         ...error,
         response: { message: getErrorMessage(error.response.data) },

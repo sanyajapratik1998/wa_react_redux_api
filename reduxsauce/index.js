@@ -18,5 +18,6 @@ const rootReducer = combineReducers({
   promotion: resettable(require("./promotionRedux").reducer),
   config: require("./configRedux").reducer,
   franchise: resettable(require("./franchiseRedux").reducer),
+  activeOrderConfig: resettable(require('./activeOrderConfigRedux').reducer),
 });
 module.exports = { rootReducer };
