@@ -216,11 +216,17 @@ const verifyCode = (data, navigation) => async (dispatch) => {
   dispatch(CommonActions.setLoading(false));
 };
 
-const logout = (callback) => async (dispatch, getState) => {
+const logout = (data, callback) => async (dispatch, getState) => {
   const { config } = getState;
+
+  let url = "/user/logout";
+  if (data.token && data.type) {
+    url = "?from="+data.from+"&type=" + data.type + "&token=" + data.token;
+  }
+
   dispatch(CommonActions.setLoading(true));
   await axios
-    .get("/user/logout/")
+    .get(url)
     .then((response) => {
       console.log("response", response);
       axios.defaults.headers.common["Authorization"] = "";
@@ -420,7 +426,7 @@ const onResetPassword = (body, callback) => async (dispatch, getState) => {
       callback("success", response);
     })
     .catch((error) => {
-      console.log("error->", error['response']);
+      console.log("error->", error["response"]);
       dispatch(
         CommonActions.setAlert({
           visible: true,
@@ -431,19 +437,19 @@ const onResetPassword = (body, callback) => async (dispatch, getState) => {
     });
 };
 
-const onUpdateFCMToken = (token) => (dispatch,getState) => {
-  const {user} = getState().auth
+const onUpdateFCMToken = (token) => (dispatch, getState) => {
+  const { user } = getState().auth;
   axios
-            .put('/user/update/profile/' + user['id'], {
-              fcm_token: token,
-            })
-            .then((response) => {
-              console.log('response update profile', response['data']);
-            })
-            .catch((error) => {
-              console.log('error to set fcm_token', error);
-            });
-}
+    .put("/user/update/profile/" + user["id"], {
+      fcm_token: token,
+    })
+    .then((response) => {
+      console.log("response update profile", response["data"]);
+    })
+    .catch((error) => {
+      console.log("error to set fcm_token", error);
+    });
+};
 module.exports = {
   newRegisterAccount,
   emailPassWOrdLogin,
@@ -462,5 +468,5 @@ module.exports = {
   onUpdateAddress,
   resendOTP,
   onResetPassword,
-  onUpdateFCMToken
+  onUpdateFCMToken,
 };
