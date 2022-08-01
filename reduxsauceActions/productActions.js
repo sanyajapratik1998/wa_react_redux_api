@@ -196,9 +196,9 @@ const getProductsV1 =
       }
     }
 
-    if (cancelToken) {
-      cancelToken.cancel();
-      cancelToken = axios.CancelToken.source();
+    if (cancelToken1) {
+      cancelToken1.cancel();
+      cancelToken1 = axios.CancelToken.source();
     }
 
     try {
