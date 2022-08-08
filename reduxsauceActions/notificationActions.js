@@ -109,6 +109,7 @@ const limitPage = 10;
 
  const deleteNotification = (id) => async (dispatch, getState) => {
   console.log("deleting notification id ======================>", id);
+  dispatch(CommonActions.setLoading(true));
   await axios
     .delete("/notification/delete/" + id)
     .then((response) => {

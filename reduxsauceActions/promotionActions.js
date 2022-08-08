@@ -80,6 +80,7 @@ const limitPage = 10;
  const deletePromotion =
   (id, navigation) => async (dispatch, getState) => {
     console.log("deleting promotion id ======================>", id);
+    dispatch(CommonActions.setLoading(true));
     await axios
       .delete("/promotion/delete/" + id)
       .then((response) => {
