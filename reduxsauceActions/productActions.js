@@ -190,9 +190,9 @@ const getProductsV1 =
     }
     if (item.sortBy && item.sortBy != "") {
       if (url.includes("?")) {
-        url += "&sorted_by=" + item.sortBy;
+        url += "&sort_by=" + item.sortBy;
       } else {
-        url += "?sorted_by=" + item.sortBy;
+        url += "?sort_by=" + item.sortBy;
       }
     }
 
