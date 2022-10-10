@@ -124,6 +124,7 @@ const getProducts =
   };
 
 let cancelToken1 = axios.CancelToken.source();
+
 const getProductsV1 =
   (item, callback, loading = false) =>
   async (dispatch, getState) => {
@@ -139,6 +140,7 @@ const getProductsV1 =
       : await dispatch(CommonActions.setLoading(loading));
 
     let url = "/products/list/" + config["businessId"];
+    
     if (item.limit) {
       if (url.includes("?")) {
         url += "&limit=" + item.limit;
@@ -193,6 +195,13 @@ const getProductsV1 =
         url += "&sort_by=" + item.sortBy;
       } else {
         url += "?sort_by=" + item.sortBy;
+      }
+    }
+    if (item.variants && item.variants != "") {
+      if (url.includes("?")) {
+        url += "&variants=" + item.variants.toString();
+      } else {
+        url += "?variants=" + item.variants.toString();
       }
     }
 
@@ -290,9 +299,20 @@ const fetchRecentProducts = (callback) => async (dispatch, getState) => {
         recentProducts.map((o) => o),
     );
     console.log('recent prdct response-->>', response);
-    callback && callback('success',response.data)
+    callback && callback('success',response['data'])
   } catch (error) {
     console.log('error', error);
+  }
+}
+
+const getProductsFilters = (callback) => async (dispatch, getState) => {
+  const { config } = getState()
+  try{
+    const response = await axios.get(`/products/filter/option/${config['businessId']}`);
+    console.log('filter response -->>', response);
+    callback && callback('success', response['data'])
+  }catch(error){
+    console.log('error fliter response-->', error);
   }
 }
 
@@ -303,4 +323,5 @@ module.exports = {
   fetchSubCategory,
   getProductDetail,
   fetchRecentProducts,
+  getProductsFilters,
 };
