@@ -140,7 +140,7 @@ const getProductsV1 =
       : await dispatch(CommonActions.setLoading(loading));
 
     let url = "/products/list/" + config["businessId"];
-    
+
     if (item.limit) {
       if (url.includes("?")) {
         url += "&limit=" + item.limit;
@@ -215,6 +215,7 @@ const getProductsV1 =
         .get(url, { cancelToken: cancelToken1.token })
         .then(async (response) => {
           console.log("response======================", response);
+          callback && callback("success", response.data);
           await dispatch(
             ProductActions.getProducts({
               fetching: false,
@@ -227,7 +228,6 @@ const getProductsV1 =
 
           await dispatch(ProductActions.productSearchLoading(false));
           await dispatch(CommonActions.setLoading(false));
-          callback && callback("success", response.data);
           return response.data;
         })
         .catch(async (error) => {
@@ -292,29 +292,69 @@ const getProductDetail = (id, callback) => async (dispatch, getState) => {
 };
 
 const fetchRecentProducts = (callback) => async (dispatch, getState) => {
-  const {config,recentProducts} = getState()
+  const { config, recentProducts } = getState();
   try {
     const response = await axios.get(
-      `/products/list/${config['businessId']}?ids=` +
-        recentProducts.map((o) => o),
+      `/products/list/${config["businessId"]}?ids=` +
+        recentProducts.map((o) => o)
     );
-    console.log('recent prdct response-->>', response);
-    callback && callback('success',response['data'])
+    console.log("recent prdct response-->>", response);
+    callback && callback("success", response["data"]);
   } catch (error) {
-    console.log('error', error);
+    console.log("error", error);
   }
-}
+};
 
 const getProductsFilters = (callback) => async (dispatch, getState) => {
-  const { config } = getState()
-  try{
-    const response = await axios.get(`/products/filter/option/${config['businessId']}`);
-    console.log('filter response -->>', response);
-    callback && callback('success', response['data'])
-  }catch(error){
-    console.log('error fliter response-->', error);
+  const { config } = getState();
+  try {
+    const response = await axios.get(
+      `/products/filter/option/${config["businessId"]}`
+    );
+    console.log("filter response -->>", response);
+    callback && callback("success", response["data"]);
+  } catch (error) {
+    console.log("error fliter response-->", error);
   }
-}
+};
+
+const getProductReview = (id, callback) => async (dispatch, getState) => {
+  dispatch(CommonActions.setLoading(true));
+  try {
+    const response = await axios.get(`/products/check/review/${id}`);
+    console.log("product Review response -->>", response);
+    callback && callback("success", response["data"]);
+    dispatch(CommonActions.setLoading(false));
+  } catch (error) {
+    console.log("error product Review response-->", error);
+    dispatch(CommonActions.setLoading(false));
+    dispatch(
+      CommonActions.setAlert({
+        visible: true,
+        content: error["response"]["message"],
+      })
+    );
+  }
+};
+
+const getProductComments = (id, callback) => async (dispatch, getState) => {
+  dispatch(CommonActions.setLoading(true));
+  try {
+    const response = await axios.get(`/products/comment/list/${id}`);
+    console.log("product comments response -->>", response);
+    callback && callback("success", response["data"]);
+    dispatch(CommonActions.setLoading(false));
+  } catch (error) {
+    console.log("error product comments response-->", error);
+    dispatch(CommonActions.setLoading(false));
+    dispatch(
+      CommonActions.setAlert({
+        visible: true,
+        content: error["response"]["message"],
+      })
+    );
+  }
+};
 
 module.exports = {
   getCategories,
@@ -324,4 +364,6 @@ module.exports = {
   getProductDetail,
   fetchRecentProducts,
   getProductsFilters,
+  getProductReview,
+  getProductComments,
 };
