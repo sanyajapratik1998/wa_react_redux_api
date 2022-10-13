@@ -178,16 +178,16 @@ const getProductsV1 =
     }
     if (item.maxPrice && item.maxPrice != "") {
       if (url.includes("?")) {
-        url += "&max_price=" + item.maxPrice;
+        url += "&price_lte=" + item.maxPrice;
       } else {
-        url += "?max_price=" + item.maxPrice;
+        url += "?price_lte=" + item.maxPrice;
       }
     }
     if (item.minPrice && item.minPrice != "") {
       if (url.includes("?")) {
-        url += "&min_price=" + item.minPrice;
+        url += "&price_gte=" + item.minPrice;
       } else {
-        url += "?min_price=" + item.minPrice;
+        url += "?price_gte=" + item.minPrice;
       }
     }
     if (item.sortBy && item.sortBy != "") {
