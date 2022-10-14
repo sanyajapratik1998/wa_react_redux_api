@@ -61,7 +61,7 @@ const getSubscriptionDetail = (id, callback) => async (dispatch, getState) => {
   }
 };
 
-module.export = {
+module.exports = {
   createSubscription,
   userSubscriptionList,
   getSubscriptionDetail,

@@ -86,7 +86,7 @@ const getTableBookingDetail = (id, callback) => async (dispatch, getState) => {
   }
 };
 
-module.export = {
+module.exports = {
   getAvailableTables,
   createTableBooking,
   getUserTableBookingList,
