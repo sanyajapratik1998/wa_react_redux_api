@@ -17,7 +17,7 @@ const createSubscription = (body, callback) => async (dispatch, getState) => {
         content: error["response"]["message"],
       })
     );
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 
@@ -37,7 +37,7 @@ const userSubscriptionList = (callback) => async (dispatch, getState) => {
         content: error["response"]["message"],
       })
     );
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 
@@ -57,7 +57,7 @@ const getSubscriptionDetail = (id, callback) => async (dispatch, getState) => {
         content: error["response"]["message"],
       })
     );
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 

@@ -20,7 +20,7 @@ const getAvailableTables = (body, callback) => async (dispatch, getState) => {
         content: error["response"]["message"],
       })
     );
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 
@@ -40,7 +40,7 @@ const createTableBooking = (body, callback) => async (dispatch, getState) => {
         content: error["response"]["message"],
       })
     );
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 
@@ -60,7 +60,7 @@ const getUserTableBookingList = (callback) => async (dispatch, getState) => {
         content: error["response"]["message"],
       })
     );
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 
@@ -82,7 +82,7 @@ const getTableBookingDetail = (id, callback) => async (dispatch, getState) => {
         content: error["response"]["message"],
       })
     );
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 

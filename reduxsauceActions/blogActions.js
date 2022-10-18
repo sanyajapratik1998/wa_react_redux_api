@@ -19,7 +19,7 @@ const getBlogList = (callback) => async (dispatch, getState) => {
       })
     );
 
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 
@@ -40,11 +40,11 @@ const getBlogDetail = (slug, callback) => async (dispatch, getState) => {
         content: error["response"]["message"],
       })
     );
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 
-const getGalleryList = async (dispatch, getState) => {
+const getGalleryList =(callback) => async (dispatch, getState) => {
   const { config } = getState();
   dispatch(CommonActions.setLoading(true));
   try {
@@ -63,7 +63,7 @@ const getGalleryList = async (dispatch, getState) => {
         content: error["response"]["message"],
       })
     );
-    callback && callback("error", error["response"]["data"]);
+    callback && callback("error", error["response"]);
   }
 };
 

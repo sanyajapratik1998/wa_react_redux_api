@@ -221,7 +221,7 @@ const logout = (data, callback) => async (dispatch, getState) => {
 
   let url = "/user/logout";
   if (data.token && data.type) {
-    url = "?from="+data.from+"&type=" + data.type + "&token=" + data.token;
+    url = "?from=" + data.from + "&type=" + data.type + "&token=" + data.token;
   }
 
   dispatch(CommonActions.setLoading(true));
@@ -450,6 +450,36 @@ const onUpdateFCMToken = (token) => (dispatch, getState) => {
       console.log("error to set fcm_token", error);
     });
 };
+
+const getAvailableCoin = (dispatch, getState) => {
+  const { user } = getState().auth;
+
+  dispatch(setLoading(true));
+  dispatch(CommonActions.setLoading(true));
+  axios
+    .get("/coin/user/available")
+    .then((response) => {
+      console.log("response get available coin", response);
+      dispatch(CommonActions.setLoading(false));
+      dispatch(
+        AuthActions.setUser({
+          ...auth.user,
+          coin: response?.data?.coin || "0.00",
+        })
+      );
+    })
+    .catch((error) => {
+      console.log("coin error -->", error?.response);
+      dispatch(CommonActions.setLoading(false));
+      dispatch(
+        CommonActions.setAlert({
+          visible: true,
+          content: error["response"]["message"],
+        })
+      );
+    });
+};
+
 module.exports = {
   newRegisterAccount,
   emailPassWOrdLogin,
@@ -469,4 +499,5 @@ module.exports = {
   resendOTP,
   onResetPassword,
   onUpdateFCMToken,
+  getAvailableCoin,
 };
