@@ -24,7 +24,7 @@ const createSubscription = (body, callback) => async (dispatch, getState) => {
 const userSubscriptionList = (callback) => async (dispatch, getState) => {
   dispatch(CommonActions.setLoading(true));
   try {
-    const response = await axios.get(`/subcription/user`);
+    const response = await axios.get(`/subcription/list/user`);
     console.log("userSubscriptionList response -->>", response);
     callback && callback("success", response["data"]);
     dispatch(CommonActions.setLoading(false));

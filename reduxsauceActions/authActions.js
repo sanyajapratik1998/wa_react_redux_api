@@ -464,12 +464,12 @@ const getAvailableCoin = (dispatch, getState) => {
       dispatch(
         AuthActions.setUser({
           ...auth.user,
-          coin: response?.data?.coin || "0.00",
+          coin: response.data.coin || "0.00",
         })
       );
     })
     .catch((error) => {
-      console.log("coin error -->", error?.response);
+      console.log("coin error -->", error.response);
       dispatch(CommonActions.setLoading(false));
       dispatch(
         CommonActions.setAlert({
