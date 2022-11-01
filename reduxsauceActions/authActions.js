@@ -221,7 +221,7 @@ const logout = (data, callback) => async (dispatch, getState) => {
 
   let url = "/user/logout";
   if (data.token && data.type) {
-    url = "?from=" + data.from + "&type=" + data.type + "&token=" + data.token;
+    url = "?token_from=" + data.from + "&type=" + data.type + "&token=" + data.token;
   }
 
   dispatch(CommonActions.setLoading(true));
