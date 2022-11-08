@@ -221,7 +221,13 @@ const logout = (data, callback) => async (dispatch, getState) => {
 
   let url = "/user/logout";
   if (data.token && data.type) {
-    url = "?token_from=" + data.from + "&type=" + data.type + "&token=" + data.token;
+    url =
+      "?token_from=" +
+      data.from +
+      "&type=" +
+      data.type +
+      "&token=" +
+      data.token;
   }
 
   dispatch(CommonActions.setLoading(true));
@@ -451,7 +457,7 @@ const onUpdateFCMToken = (token) => (dispatch, getState) => {
     });
 };
 
-const getAvailableCoin = (dispatch, getState) => {
+const getAvailableCoin = () => async (dispatch, getState) => {
   const { user } = getState().auth;
 
   dispatch(setLoading(true));
