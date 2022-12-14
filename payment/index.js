@@ -164,7 +164,7 @@ const PaymentNow = async (object, callback) => {
   let paytmBaseURL =
     business.ENV == "local" || business.ENV == "development"
       ? "https://securegw-stage.paytm.in"
-      : business.slug == "demo-retail" || business.slug == "demo-restaurants"
+      : business.domain == "demo-retail.whitelabelapp.in" || business.slug == "demo-restaurants.whitelabelapp.in"
       ? "https://securegw-stage.paytm.in"
       : "https://securegw.paytm.in";
 
