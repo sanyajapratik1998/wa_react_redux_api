@@ -179,7 +179,7 @@ const getAppConfig = () => async (dispatch, getState) => {
 
   try {
     await axios
-      .get(`/business/app/config/${config['slug']}`)
+      .get(`/business/app/config/${config['domain']}`)
       .then((response) => {
         console.log("response app config", response);
         response.data.success &&
