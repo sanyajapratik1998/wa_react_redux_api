@@ -113,13 +113,17 @@ const getProducts =
           //     content: error?.response?.message,
           //   }),
           // );
-          dispatch(ProductActions.productSearchLoading(false));
-          dispatch(CommonActions.setLoading(false));
+          if (error["code"] !== "ERR_CANCELED") {
+            dispatch(ProductActions.productSearchLoading(false));
+            dispatch(CommonActions.setLoading(false));
+          }
         });
-    } catch ({ message }) {
-      dispatch(CommonActions.setAlert({ visible: true, content: message }));
-      dispatch(ProductActions.productSearchLoading(false));
-      dispatch(CommonActions.setLoading(false));
+    } catch ({ message, code }) {
+      if (code !== "ERR_CANCELED") {
+        dispatch(CommonActions.setAlert({ visible: true, content: message }));
+        dispatch(ProductActions.productSearchLoading(false));
+        dispatch(CommonActions.setLoading(false));
+      }
     }
   };
 
@@ -238,13 +242,17 @@ const getProductsV1 =
           //     content: error?.response?.message,
           //   }),
           // );
-          await dispatch(ProductActions.productSearchLoading(false));
-          await dispatch(CommonActions.setLoading(false));
+          if (error["code"] !== "ERR_CANCELED") {
+            await dispatch(ProductActions.productSearchLoading(false));
+            await dispatch(CommonActions.setLoading(false));
+          }
         });
-    } catch ({ message }) {
-      dispatch(CommonActions.setAlert({ visible: true, content: message }));
-      dispatch(ProductActions.productSearchLoading(false));
-      dispatch(CommonActions.setLoading(false));
+    } catch ({ message , code }) {
+      if (code !== "ERR_CANCELED") {
+        dispatch(CommonActions.setAlert({ visible: true, content: message }));
+        dispatch(ProductActions.productSearchLoading(false));
+        dispatch(CommonActions.setLoading(false));
+      }
     }
   };
 

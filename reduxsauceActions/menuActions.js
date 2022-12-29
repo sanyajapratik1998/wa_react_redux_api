@@ -86,10 +86,12 @@ let cancelToken = axios.CancelToken.source();
           dispatch(MenuRedux.menuSearchLoading(false));
           dispatch(CommonActions.setLoading(false));
         });
-    } catch ({message}) {
-      dispatch(CommonActions.setAlert({visible: true, content: message}));
-      dispatch(MenuRedux.menuSearchLoading(false));
-      dispatch(CommonActions.setLoading(false));
+    } catch (error) {
+      if(error['code'] !== "ERR_CANCELED"){
+        dispatch(CommonActions.setAlert({visible: true, content: error?.message}));
+        dispatch(MenuRedux.menuSearchLoading(false));
+        dispatch(CommonActions.setLoading(false));
+      }
     }
   };
 

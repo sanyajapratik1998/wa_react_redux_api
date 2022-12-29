@@ -1,8 +1,8 @@
-const axios = require('axios')
-const CommonActions = require('../reduxsauce/commonRedux')
-const ServicesRedux = require('../reduxsauce/servicesRedux')
+const axios = require("axios");
+const CommonActions = require("../reduxsauce/commonRedux");
+const ServicesRedux = require("../reduxsauce/servicesRedux");
 
- const getServicesCategories = () => async (dispatch, getState) => {
+const getServicesCategories = () => async (dispatch, getState) => {
   const { config } = getState();
   dispatch(CommonActions.setLoading(true));
   try {
@@ -23,18 +23,18 @@ const ServicesRedux = require('../reduxsauce/servicesRedux')
     }
   } catch (error) {
     dispatch(CommonActions.setLoading(false));
-    console.log("message",  error.response.message);
+    console.log("message", error.response.message);
     dispatch(
       CommonActions.setAlert({
         visible: true,
-        content:  error.response.message,
+        content: error.response.message,
       })
     );
   }
 };
 
 let cancelToken = axios.CancelToken.source();
- const getServices =
+const getServices =
   (search = false, category = false) =>
   async (dispatch, getState) => {
     const {
@@ -49,16 +49,16 @@ let cancelToken = axios.CancelToken.source();
     let url =
       search && category
         ? "/services/list/" +
-          config['businessId'] +
+          config["businessId"] +
           "?search=" +
           search +
           "&category=" +
           category
         : category
-        ? "/services/list/" + config['businessId'] + "?category=" + category
+        ? "/services/list/" + config["businessId"] + "?category=" + category
         : search
-        ? "/services/list/" + config['businessId'] + "?search=" + search
-        : "/services/list/" + config['businessId'];
+        ? "/services/list/" + config["businessId"] + "?search=" + search
+        : "/services/list/" + config["businessId"];
 
     if (cancelToken) {
       cancelToken.cancel();
@@ -81,23 +81,27 @@ let cancelToken = axios.CancelToken.source();
         })
         .catch((error) => {
           console.log("error", error);
-          dispatch(
-            CommonActions.setAlert({
-              visible: true,
-              content:  error.response.message,
-            })
-          );
-          dispatch(ServicesRedux.serviceSearchLoading(false));
-          dispatch(CommonActions.setLoading(false));
+          if (error["code"] !== "ERR_CANCELED") {
+            dispatch(
+              CommonActions.setAlert({
+                visible: true,
+                content: error.response.message,
+              })
+            );
+            dispatch(ServicesRedux.serviceSearchLoading(false));
+            dispatch(CommonActions.setLoading(false));
+          }
         });
-    } catch ({ message }) {
-      dispatch(CommonActions.setAlert({ visible: true, content: message }));
-      dispatch(ServicesRedux.serviceSearchLoading(false));
-      dispatch(CommonActions.setLoading(false));
+    } catch ({ message, code }) {
+      if (code !== "ERR_CANCELED") {
+        dispatch(CommonActions.setAlert({ visible: true, content: message }));
+        dispatch(ServicesRedux.serviceSearchLoading(false));
+        dispatch(CommonActions.setLoading(false));
+      }
     }
   };
 
- const onUpdateServices = (body, id, navigation) => (dispatch) => {
+const onUpdateServices = (body, id, navigation) => (dispatch) => {
   dispatch(CommonActions.setLoading(true));
   axios
     .put("/services/update/" + id, body, {
@@ -121,7 +125,7 @@ let cancelToken = axios.CancelToken.source();
     });
 };
 
- const onCreateServices = (body, navigation) => (dispatch) => {
+const onCreateServices = (body, navigation) => (dispatch) => {
   axios
     .post("/services/create", body, {
       headers: {
@@ -137,11 +141,16 @@ let cancelToken = axios.CancelToken.source();
       dispatch(
         CommonActions.setAlert({
           visible: true,
-          content:  error.response.message,
+          content: error.response.message,
         })
       );
       dispatch(CommonActions.setLoading(false));
     });
 };
 
-module.exports = {getServicesCategories,getServices,onUpdateServices,onCreateServices}
+module.exports = {
+  getServicesCategories,
+  getServices,
+  onUpdateServices,
+  onCreateServices,
+};
