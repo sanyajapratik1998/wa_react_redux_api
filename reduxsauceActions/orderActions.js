@@ -63,17 +63,19 @@ const createOrderV3 = (params) => async (dispatch, getState) => {
 
   let product_variants = [];
 
-  cart.list.map((item) =>
-    item.selectedVariants.map((o) => {
-      let variantIndex = item?.variant?.findIndex(
-        (v) => v.variant_type.type == o.type
-      );
-      product_variants.push(
-        item?.variant[variantIndex].variants.find(
-          (v) => o.value == v.variant.name
-        ).id
-      );
-    })
+  cart.list.map(
+    (item) =>
+      item.selectedVariants &&
+      item.selectedVariants.map((o) => {
+        let variantIndex = item.variant.findIndex(
+          (v) => v.variant_type.type == o.type
+        );
+        product_variants.push(
+          item.variant[variantIndex].variants.find(
+            (v) => o.value == v.variant.name
+          ).id
+        );
+      })
   );
 
   let products = cart.list.map(
@@ -82,7 +84,7 @@ const createOrderV3 = (params) => async (dispatch, getState) => {
         product: o.id,
         qty: parseInt(o.cart_qty),
         price: parseFloat(o.price),
-        product_variants: product_variants ? product_variants : null,
+        product_variants: o.selectedVariants ? product_variants : null,
         final_price: o.final_price,
       })
   );
