@@ -88,7 +88,7 @@ let cancelToken = axios.CancelToken.source();
         });
     } catch (error) {
       if(error['code'] !== "ERR_CANCELED"){
-        dispatch(CommonActions.setAlert({visible: true, content: error?.message}));
+        dispatch(CommonActions.setAlert({visible: true, content: error.message}));
         dispatch(MenuRedux.menuSearchLoading(false));
         dispatch(CommonActions.setLoading(false));
       }

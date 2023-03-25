@@ -67,14 +67,7 @@ const createOrderV3 = (params) => async (dispatch, getState) => {
     (item) =>
       item.selectedVariants &&
       item.selectedVariants.map((o) => {
-        let variantIndex = item.variant.findIndex(
-          (v) => v.variant_type.type == o.type
-        );
-        product_variants.push(
-          item.variant[variantIndex].variants.find(
-            (v) => o.value == v.variant.name
-          ).id
-        );
+        product_variants.push(o.id)
       })
   );
 
