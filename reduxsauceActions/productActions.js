@@ -129,7 +129,7 @@ const getProducts =
 
 let cancelToken1 = axios.CancelToken.source();
 
-const getProductsV1 =
+const getProductsV2 =
   (item, callback, loading = false) =>
   async (dispatch, getState) => {
     const {
@@ -143,7 +143,7 @@ const getProductsV1 =
       ? await dispatch(ProductActions.productSearchLoading(loading))
       : await dispatch(CommonActions.setLoading(loading));
 
-    let url = "/products/list/" + config["businessId"];
+    let url = "/v2/product/list/" + config["businessId"];
 
     if (item.limit) {
       if (url.includes("?")) {
@@ -247,7 +247,7 @@ const getProductsV1 =
             await dispatch(CommonActions.setLoading(false));
           }
         });
-    } catch ({ message , code }) {
+    } catch ({ message, code }) {
       if (code !== "ERR_CANCELED") {
         dispatch(CommonActions.setAlert({ visible: true, content: message }));
         dispatch(ProductActions.productSearchLoading(false));
@@ -367,7 +367,7 @@ const getProductComments = (id, callback) => async (dispatch, getState) => {
 module.exports = {
   getCategories,
   getProducts,
-  getProductsV1,
+  getProductsV2,
   fetchSubCategory,
   getProductDetail,
   fetchRecentProducts,
