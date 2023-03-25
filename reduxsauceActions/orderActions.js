@@ -8,28 +8,13 @@ const createOrder = (params) => async (dispatch, getState) => {
   const { config, cart } = getState();
   dispatch(CommonActions.setLoading(true));
 
-  let product_variants = [];
-
-  cart.list.map((item) =>
-    item.selectedVariants.map((o) => {
-      let variantIndex = item?.variant?.findIndex(
-        (v) => v.variant_type.type == o.type
-      );
-      product_variants.push(
-        item?.variant[variantIndex].variants.find(
-          (v) => o.value == v.variant.name
-        ).id
-      );
-    })
-  );
-
   let products = cart.list.map(
     (o) =>
       new Object({
         product: o.id,
         qty: parseInt(o.cart_qty),
         price: parseFloat(o.price),
-        product_variants: product_variants ? product_variants : null,
+        selected_variants: o.selectedVariants ? o.selectedVariants : null,
         final_price: o.final_price,
       })
   );
@@ -75,13 +60,29 @@ const createOrderV3 = (params) => async (dispatch, getState) => {
   console.log("params", params);
   const { config, cart } = getState();
   dispatch(CommonActions.setLoading(true));
+
+  let product_variants = [];
+
+  cart.list.map((item) =>
+    item.selectedVariants.map((o) => {
+      let variantIndex = item?.variant?.findIndex(
+        (v) => v.variant_type.type == o.type
+      );
+      product_variants.push(
+        item?.variant[variantIndex].variants.find(
+          (v) => o.value == v.variant.name
+        ).id
+      );
+    })
+  );
+
   let products = cart.list.map(
     (o) =>
       new Object({
         product: o.id,
         qty: parseInt(o.cart_qty),
         price: parseFloat(o.price),
-        selected_variants: o.selectedVariants ? o.selectedVariants : null,
+        product_variants: product_variants ? product_variants : null,
         final_price: o.final_price,
       })
   );
