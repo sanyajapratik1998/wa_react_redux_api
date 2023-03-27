@@ -67,7 +67,7 @@ const createOrderV3 = (params) => async (dispatch, getState) => {
     (item) =>
       item.selectedVariants &&
       item.selectedVariants.map((o) => {
-        product_variants.push(o.id)
+        product_variants.push(o.id);
       })
   );
 
@@ -77,7 +77,7 @@ const createOrderV3 = (params) => async (dispatch, getState) => {
         product: o.id,
         qty: parseInt(o.cart_qty),
         price: parseFloat(o.price),
-        product_variants: o.selectedVariants ? product_variants : null,
+        product_variants: o.selectedVariants ? product_variants : [],
         final_price: o.final_price,
       })
   );
