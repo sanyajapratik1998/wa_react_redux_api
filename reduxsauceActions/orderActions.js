@@ -61,26 +61,21 @@ const createOrderV3 = (params) => async (dispatch, getState) => {
   const { config, cart } = getState();
   dispatch(CommonActions.setLoading(true));
 
-  let product_variants = [];
+  let products = cart.list.map((o) => {
+    let product_variants = o.selectedVariants
+      ? o.selectedVariants.map((item) => {
+          return item.id;
+        })
+      : [];
 
-  cart.list.map(
-    (item) =>
-      item.selectedVariants &&
-      item.selectedVariants.map((o) => {
-        product_variants.push(o.id);
-      })
-  );
-
-  let products = cart.list.map(
-    (o) =>
-      new Object({
-        product: o.id,
-        qty: parseInt(o.cart_qty),
-        price: parseFloat(o.price),
-        product_variants: o.selectedVariants ? product_variants : [],
-        final_price: o.final_price,
-      })
-  );
+    return new Object({
+      product: o.id,
+      qty: parseInt(o.cart_qty),
+      price: parseFloat(o.price),
+      product_variants: product_variants,
+      final_price: o.final_price,
+    });
+  });
   // console.log(cart.list);
   console.log({
     business: config["businessId"],
